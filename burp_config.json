@@ -1,0 +1,148 @@
+{
+    "project": {
+        "project_file": "C:\\SecurityTools\\Projects\\burp_project.burp",
+        "temp_directory": "C:\\SecurityTools\\Temp\\burp",
+        "backup_directory": "C:\\SecurityTools\\Backups\\burp",
+        "auto_save": true,
+        "backup_interval": 300
+    },
+    "proxy": {
+        "listen_address": "127.0.0.1",
+        "listen_port": 8080,
+        "ssl_certificate": "C:\\SecurityTools\\Configs\\burp\\cacert.der",
+        "ssl_key": "C:\\SecurityTools\\Configs\\burp\\cakey.der",
+        "pass_through": {
+            "enabled": true,
+            "exclude": [
+                "127.0.0.1",
+                "localhost"
+            ]
+        }
+    },
+    "scanner": {
+        "thread_count": 10,
+        "request_delay": 100,
+        "response_delay": 100,
+        "timeout": 30000,
+        "report_directory": "C:\\SecurityTools\\Reports\\burp",
+        "report_format": "HTML",
+        "auto_scan": {
+            "enabled": true,
+            "scope": "target",
+            "exclude": [
+                "logout",
+                "delete",
+                "remove"
+            ]
+        }
+    },
+    "intruder": {
+        "thread_count": 10,
+        "request_delay": 100,
+        "response_delay": 100,
+        "timeout": 30000,
+        "report_directory": "C:\\SecurityTools\\Reports\\burp\\intruder",
+        "report_format": "HTML",
+        "payload_sets": {
+            "directory": "C:\\SecurityTools\\Configs\\burp\\payloads",
+            "auto_load": true
+        }
+    },
+    "repeater": {
+        "request_delay": 100,
+        "history_retention": 100,
+        "auto_save": true,
+        "save_directory": "C:\\SecurityTools\\Projects\\burp\\repeater"
+    },
+    "sequencer": {
+        "thread_count": 10,
+        "report_directory": "C:\\SecurityTools\\Reports\\burp\\sequencer",
+        "report_format": "HTML"
+    },
+    "decoder": {
+        "auto_decode": {
+            "base64": true,
+            "url": true,
+            "html": true,
+            "hex": true,
+            "gzip": true,
+            "deflate": true
+        }
+    },
+    "logger": {
+        "enabled": true,
+        "log_directory": "C:\\SecurityTools\\Logs\\burp",
+        "max_size": 10485760,
+        "format": "XML",
+        "include": {
+            "requests": true,
+            "responses": true,
+            "errors": true
+        }
+    },
+    "extensions": {
+        "directory": "C:\\SecurityTools\\Tools\\burp\\extensions",
+        "auto_update": true,
+        "enabled": [
+            "Autorize",
+            "HTTP Request Smuggler",
+            "JWT Editor",
+            "Logger++",
+            "Turbo Intruder"
+        ]
+    },
+    "ui": {
+        "theme": "dark",
+        "font_size": 12,
+        "font_family": "Consolas",
+        "show_line_numbers": true,
+        "show_request_tabs": true,
+        "show_response_tabs": true
+    },
+    "security": {
+        "ssl_verification": {
+            "enabled": true,
+            "strict": true,
+            "certificate_validation": true
+        },
+        "tls_protocols": {
+            "tls_1_2": true,
+            "tls_1_3": true,
+            "tls_1_1": false,
+            "tls_1_0": false
+        },
+        "cipher_suites": {
+            "enabled": [
+                "TLS_AES_128_GCM_SHA256",
+                "TLS_AES_256_GCM_SHA384",
+                "TLS_CHACHA20_POLY1305_SHA256"
+            ]
+        }
+    },
+    "performance": {
+        "memory_limit": 2048,
+        "connection_timeout": 30000,
+        "read_timeout": 30000,
+        "write_timeout": 30000,
+        "max_connections": 100
+    },
+    "automation": {
+        "script_directory": "C:\\SecurityTools\\Scripts\\burp",
+        "auto_load": true,
+        "enabled_scripts": [
+            "scan_automation.py",
+            "report_generator.py",
+            "vulnerability_checker.py"
+        ]
+    },
+    "documentation": {
+        "directory": "C:\\SecurityTools\\Docs\\burp",
+        "auto_generate": true,
+        "format": "Markdown",
+        "include": {
+            "scan_results": true,
+            "vulnerabilities": true,
+            "remediation": true
+        }
+    }
+} 

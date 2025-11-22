@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Preset>
+    <Components>
+        <!-- Remove unnecessary Windows components -->
+        <Remove>
+            <Component>Microsoft.Windows.XboxApp</Component>
+            <Component>Microsoft.Windows.Cortana</Component>
+            <Component>Microsoft.Windows.OneDrive</Component>
+            <Component>Microsoft.Windows.Edge</Component>
+            <Component>Microsoft.Windows.Telemetry</Component>
+            <Component>Microsoft.Windows.Tips</Component>
+            <Component>Microsoft.Windows.FeedbackHub</Component>
+            <Component>Microsoft.Windows.People</Component>
+            <Component>Microsoft.Windows.Store</Component>
+        </Remove>
+    </Components>
+    
+    <Tweaks>
+        <!-- System Performance Tweaks -->
+        <Tweak>
+            <Path>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects</Path>
+            <Name>VisualFXSetting</Name>
+            <Type>DWORD</Type>
+            <Value>2</Value>
+        </Tweak>
+        
+        <!-- Dark Mode -->
+        <Tweak>
+            <Path>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize</Path>
+            <Name>AppsUseLightTheme</Name>
+            <Type>DWORD</Type>
+            <Value>0</Value>
+        </Tweak>
+        
+        <!-- Show Hidden Files -->
+        <Tweak>
+            <Path>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced</Path>
+            <Name>Hidden</Name>
+            <Type>DWORD</Type>
+            <Value>1</Value>
+        </Tweak>
+        
+        <!-- Show File Extensions -->
+        <Tweak>
+            <Path>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced</Path>
+            <Name>HideFileExt</Name>
+            <Type>DWORD</Type>
+            <Value>0</Value>
+        </Tweak>
+    </Tweaks>
+    
+    <Unattended>
+        <User>
+            <Name>darkwin_user</Name>
+            <Password>DarkWin@2024</Password>
+            <Group>Administrators</Group>
+        </User>
+        <AutoLogon>true</AutoLogon>
+        <SkipProductKey>true</SkipProductKey>
+        <SkipOOBE>true</SkipOOBE>
+    </Unattended>
+    
+    <PostSetup>
+        <Script>SetupComplete.cmd</Script>
+    </PostSetup>
+</Preset> 

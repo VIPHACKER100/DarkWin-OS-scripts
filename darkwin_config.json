@@ -1,0 +1,83 @@
+{
+    "system": {
+        "username": "darkwin_user",
+        "hostname": "DARKWIN",
+        "timezone": "UTC",
+        "language": "en-US"
+    },
+    "theme": {
+        "wallpaper": {
+            "desktop": "C:\\Windows\\Web\\Wallpaper\\DarkWin\\desktop.jpg",
+            "lockscreen": "C:\\Windows\\Web\\Wallpaper\\DarkWin\\lockscreen.jpg"
+        },
+        "colors": {
+            "accent": "#00ff00",
+            "background": "#1a1a1a",
+            "text": "#ffffff"
+        }
+    },
+    "tools": {
+        "nmap": {
+            "config": "C:\\Tools\\Configs\\nmap.conf",
+            "scripts": "C:\\Tools\\Scripts\\nmap"
+        },
+        "wireshark": {
+            "config": "C:\\Tools\\Configs\\wireshark.conf",
+            "captures": "C:\\Tools\\Captures"
+        },
+        "metasploit": {
+            "config": "C:\\Tools\\Configs\\msf.conf",
+            "workspace": "C:\\Tools\\Workspaces",
+            "database": {
+                "enabled": true,
+                "host": "localhost",
+                "port": 5432
+            }
+        },
+        "burp": {
+            "config": "C:\\Tools\\Configs\\burp.conf",
+            "projects": "C:\\Tools\\Projects"
+        }
+    },
+    "security": {
+        "defender": {
+            "enabled": false,
+            "exclusions": [
+                "C:\\Tools",
+                "C:\\metasploit-framework",
+                "C:\\Program Files\\Wireshark",
+                "C:\\Program Files\\Nmap"
+            ]
+        },
+        "firewall": {
+            "enabled": true,
+            "rules": {
+                "wireshark": true,
+                "nmap": true,
+                "metasploit": true,
+                "burp": true
+            }
+        },
+        "uac": {
+            "level": "always_notify",
+            "auto_admin": false
+        }
+    },
+    "automation": {
+        "scripts": {
+            "setup": "C:\\Tools\\Scripts\\setup.ps1",
+            "update": "C:\\Tools\\Scripts\\update.ps1",
+            "backup": "C:\\Tools\\Scripts\\backup.ps1"
+        },
+        "scheduled_tasks": {
+            "update_tools": {
+                "enabled": true,
+                "frequency": "weekly"
+            },
+            "backup_configs": {
+                "enabled": true,
+                "frequency": "daily"
+            }
+        }
+    }
+} 

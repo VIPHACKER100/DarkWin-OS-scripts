@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NTLite>
+    <Components>
+        <!-- Remove Bloatware -->
+        <Remove>
+            <Component>Microsoft.Windows.Store</Component>
+            <Component>Microsoft.WindowsAlarms</Component>
+            <Component>Microsoft.WindowsCalculator</Component>
+            <Component>Microsoft.WindowsCamera</Component>
+            <Component>Microsoft.WindowsFeedbackHub</Component>
+            <Component>Microsoft.WindowsMaps</Component>
+            <Component>Microsoft.WindowsSoundRecorder</Component>
+            <Component>Microsoft.XboxApp</Component>
+            <Component>Microsoft.XboxGameOverlay</Component>
+            <Component>Microsoft.XboxGamingOverlay</Component>
+            <Component>Microsoft.XboxIdentityProvider</Component>
+            <Component>Microsoft.XboxSpeechToTextOverlay</Component>
+            <Component>Microsoft.YourPhone</Component>
+            <Component>Microsoft.ZuneMusic</Component>
+            <Component>Microsoft.ZuneVideo</Component>
+            <Component>Microsoft.3DBuilder</Component>
+            <Component>Microsoft.BingFinance</Component>
+            <Component>Microsoft.BingNews</Component>
+            <Component>Microsoft.BingSports</Component>
+            <Component>Microsoft.BingWeather</Component>
+            <Component>Microsoft.GetHelp</Component>
+            <Component>Microsoft.Getstarted</Component>
+            <Component>Microsoft.MicrosoftOfficeHub</Component>
+            <Component>Microsoft.MicrosoftSolitaireCollection</Component>
+            <Component>Microsoft.MixedReality.Portal</Component>
+            <Component>Microsoft.OneConnect</Component>
+            <Component>Microsoft.People</Component>
+            <Component>Microsoft.Print3D</Component>
+            <Component>Microsoft.SkypeApp</Component>
+            <Component>Microsoft.WindowsAlarms</Component>
+            <Component>Microsoft.WindowsFeedbackHub</Component>
+            <Component>Microsoft.WindowsMaps</Component>
+            <Component>Microsoft.WindowsSoundRecorder</Component>
+            <Component>Microsoft.XboxApp</Component>
+            <Component>Microsoft.XboxGameOverlay</Component>
+            <Component>Microsoft.XboxGamingOverlay</Component>
+            <Component>Microsoft.XboxIdentityProvider</Component>
+            <Component>Microsoft.XboxSpeechToTextOverlay</Component>
+            <Component>Microsoft.YourPhone</Component>
+            <Component>Microsoft.ZuneMusic</Component>
+            <Component>Microsoft.ZuneVideo</Component>
+        </Remove>
+
+        <!-- Keep Essential Components -->
+        <Keep>
+            <Component>Microsoft-Windows-Subsystem-Linux</Component>
+            <Component>Microsoft-Windows-HyperV</Component>
+            <Component>Microsoft-Windows-PowerShell</Component>
+            <Component>Microsoft-Windows-CommandPrompt</Component>
+            <Component>Microsoft-Windows-RemoteDesktop</Component>
+            <Component>Microsoft-Windows-NetworkComponents</Component>
+            <Component>Microsoft-Windows-SecurityComponents</Component>
+            <Component>Microsoft-Windows-NetFx3</Component>
+            <Component>Microsoft-Windows-VCRedist</Component>
+        </Keep>
+    </Components>
+
+    <Tweaks>
+        <!-- Security Tweaks -->
+        <Tweak>
+            <Path>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System</Path>
+            <Name>EnableSmartScreen</Name>
+            <Type>DWORD</Type>
+            <Value>1</Value>
+        </Tweak>
+        <Tweak>
+            <Path>HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\System</Path>
+            <Name>EnableSmartScreen</Name>
+            <Type>DWORD</Type>
+            <Value>1</Value>
+        </Tweak>
+
+        <!-- Performance Tweaks -->
+        <Tweak>
+            <Path>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects</Path>
+            <Name>VisualFXSetting</Name>
+            <Type>DWORD</Type>
+            <Value>2</Value>
+        </Tweak>
+    </Tweaks>
+
+    <Unattended>
+        <UserData>
+            <FullName>SecurityUser</FullName>
+            <Organization>SecurityLab</Organization>
+            <ComputerName>SECLAB-PC</ComputerName>
+        </UserData>
+        <RegionalSettings>
+            <InputLocale>en-US</InputLocale>
+            <SystemLocale>en-US</SystemLocale>
+            <UserLocale>en-US</UserLocale>
+        </RegionalSettings>
+        <Network>
+            <Workgroup>SECLAB</Workgroup>
+        </Network>
+    </Unattended>
+
+    <PostSetup>
+        <Command>setupcomplete.cmd</Command>
+    </PostSetup>
+</NTLite> 
