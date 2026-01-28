@@ -28,7 +28,7 @@ try {
 $ScriptVersion = "2.0"
 $ScriptName = "Advanced Security Assessment Tool"
 $Author = "Security Team"
-$LastUpdated = "2024-01-28"
+$LastUpdated = "2026-01-28"
 
 # ============================================
 # CONFIGURATION MANAGEMENT
@@ -2119,3 +2119,4 @@ if ($MyInvocation.InvocationName -ne '.') {
         exit 1
     }
 }
+
