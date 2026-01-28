@@ -3,7 +3,7 @@
         "version": "2.0",
         "last_updated": "2026-01-28",
         "platform": "DarkWin OS",
-        "burp_version": "2024.x"
+        "burp_version": "2025.x"
     },
     "project": {
         "project_file": "C:\\SecurityTools\\Projects\\burp\\burp_project.burp",
@@ -728,3 +728,4 @@
         }
     }
 }
+
