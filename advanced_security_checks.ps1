@@ -1,796 +1,305 @@
-# Import required modules
-Import-Module PSLogging
-Import-Module security_logging
-Import-Module enhanced_security_checks
+# advanced_security_checks_enhanced.ps1
+# Advanced Security Assessment Tool - Enhanced Version
+# Version: 2.0
+# Description: Comprehensive security assessment with enhanced reporting and automation
 
-# Initialize logging
-$logPath = "C:\SecurityTools\Logs\advanced_security_checks_$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log"
-Initialize-Logging -LogPath $logPath
+# ============================================
+# MODULE IMPORTS AND INITIALIZATION
+# ============================================
 
-# Set paths
-$reportPath = "C:\SecurityTools\Reports"
-$configPath = "C:\SecurityTools\Configs\security_checks_config.json"
-
-# Create directories if they don't exist
-if (-not (Test-Path $reportPath)) { New-Item -ItemType Directory -Path $reportPath -Force }
-if (-not (Test-Path $configPath)) { New-Item -ItemType Directory -Path (Split-Path $configPath) -Force }
-
-# Function to generate enhanced security report with additional charts and analysis
-function New-EnhancedSecurityReport {
-    param (
-        [hashtable]$NetworkResults,
-        [hashtable]$SystemResults,
-        [hashtable]$ApplicationResults,
-        [hashtable]$ComplianceResults,
-        [hashtable]$RegistryResults,
-        [hashtable]$ServiceResults,
-        [hashtable]$AntivirusResults,
-        [hashtable]$UpdateResults,
-        [hashtable]$BrowserResults,
-        [hashtable]$WhitelistResults,
-        [hashtable]$EmailResults,
-        [hashtable]$ShareResults,
-        [hashtable]$DatabaseResults,
-        [hashtable]$CloudResults,
-        [hashtable]$WebServerResults,
-        [hashtable]$DatabaseConnectionResults,
-        [hashtable]$SecurityHeadersResults,
-        [hashtable]$SharePointResults,
-        [hashtable]$ExchangeResults,
-        [hashtable]$CustomAppResults,
-        [hashtable]$SQLServerResults,
-        [hashtable]$ADResults,
-        [hashtable]$WindowsServerResults,
-        [hashtable]$DockerResults,
-        [hashtable]$KubernetesResults,
-        [hashtable]$AzureResults,
-        [hashtable]$AWSResults
-    )
-
-    try {
-        Write-LogMessage -Message "Starting enhanced security report generation" -Level Info
-
-        # Generate security issues by category
-        $securityIssues = @{
-            Network = $NetworkResults.SecurityIssues
-            System = $SystemResults.SecurityIssues
-            Application = $ApplicationResults.SecurityIssues
-            Compliance = $ComplianceResults.SecurityIssues
-            Registry = $RegistryResults.SecurityIssues
-            Service = $ServiceResults.SecurityIssues
-            Antivirus = $AntivirusResults.SecurityIssues
-            Updates = $UpdateResults.SecurityIssues
-            Browser = $BrowserResults.SecurityIssues
-            Whitelist = $WhitelistResults.SecurityIssues
-            Email = $EmailResults.SecurityIssues
-            Share = $ShareResults.SecurityIssues
-            Database = $DatabaseResults.SecurityIssues
-            Cloud = $CloudResults.SecurityIssues
-            WebServer = $WebServerResults.SecurityIssues
-            DatabaseConnection = $DatabaseConnectionResults.SecurityIssues
-            SecurityHeaders = $SecurityHeadersResults.SecurityIssues
-            SharePoint = $SharePointResults.SecurityIssues
-            Exchange = $ExchangeResults.SecurityIssues
-            CustomApp = $CustomAppResults.SecurityIssues
-            SQLServer = $SQLServerResults.SecurityIssues
-            ActiveDirectory = $ADResults.SecurityIssues
-            WindowsServer = $WindowsServerResults.SecurityIssues
-            Docker = $DockerResults.SecurityIssues
-            Kubernetes = $KubernetesResults.SecurityIssues
-            Azure = $AzureResults.SecurityIssues
-            AWS = $AWSResults.SecurityIssues
-        }
-
-        # Calculate risk scores
-        $riskScores = @{
-            Network = ($NetworkResults.SecurityIssues.Count * 10)
-            System = ($SystemResults.SecurityIssues.Count * 10)
-            Application = ($ApplicationResults.SecurityIssues.Count * 10)
-            Compliance = ($ComplianceResults.SecurityIssues.Count * 10)
-            Registry = ($RegistryResults.SecurityIssues.Count * 10)
-            Service = ($ServiceResults.SecurityIssues.Count * 10)
-            Antivirus = ($AntivirusResults.SecurityIssues.Count * 10)
-            Updates = ($UpdateResults.SecurityIssues.Count * 10)
-            Browser = ($BrowserResults.SecurityIssues.Count * 10)
-            Whitelist = ($WhitelistResults.SecurityIssues.Count * 10)
-            Email = ($EmailResults.SecurityIssues.Count * 10)
-            Share = ($ShareResults.SecurityIssues.Count * 10)
-            Database = ($DatabaseResults.SecurityIssues.Count * 10)
-            Cloud = ($CloudResults.SecurityIssues.Count * 10)
-            WebServer = ($WebServerResults.SecurityIssues.Count * 10)
-            DatabaseConnection = ($DatabaseConnectionResults.SecurityIssues.Count * 10)
-            SecurityHeaders = ($SecurityHeadersResults.SecurityIssues.Count * 10)
-            SharePoint = ($SharePointResults.SecurityIssues.Count * 10)
-            Exchange = ($ExchangeResults.SecurityIssues.Count * 10)
-            CustomApp = ($CustomAppResults.SecurityIssues.Count * 10)
-            SQLServer = ($SQLServerResults.SecurityIssues.Count * 10)
-            ActiveDirectory = ($ADResults.SecurityIssues.Count * 10)
-            WindowsServer = ($WindowsServerResults.SecurityIssues.Count * 10)
-            Docker = ($DockerResults.SecurityIssues.Count * 10)
-            Kubernetes = ($KubernetesResults.SecurityIssues.Count * 10)
-            Azure = ($AzureResults.SecurityIssues.Count * 10)
-            AWS = ($AWSResults.SecurityIssues.Count * 10)
-        }
-
-        # Generate vulnerability trend data
-        $trendData = @{
-            Network = @(65, 59, 80, 81, 56, 55, 40)
-            System = @(28, 48, 40, 19, 86, 27, 90)
-            Application = @(90, 48, 40, 19, 86, 27, 90)
-            Compliance = @(65, 59, 80, 81, 56, 55, 40)
-            Registry = @(28, 48, 40, 19, 86, 27, 90)
-            Service = @(90, 48, 40, 19, 86, 27, 90)
-            Antivirus = @(65, 59, 80, 81, 56, 55, 40)
-            Updates = @(28, 48, 40, 19, 86, 27, 90)
-            Browser = @(90, 48, 40, 19, 86, 27, 90)
-            Whitelist = @(65, 59, 80, 81, 56, 55, 40)
-            Email = @(28, 48, 40, 19, 86, 27, 90)
-            Share = @(90, 48, 40, 19, 86, 27, 90)
-            Database = @(65, 59, 80, 81, 56, 55, 40)
-            Cloud = @(28, 48, 40, 19, 86, 27, 90)
-            WebServer = @(90, 48, 40, 19, 86, 27, 90)
-            DatabaseConnection = @(65, 59, 80, 81, 56, 55, 40)
-            SecurityHeaders = @(28, 48, 40, 19, 86, 27, 90)
-            SharePoint = @(90, 48, 40, 19, 86, 27, 90)
-            Exchange = @(65, 59, 80, 81, 56, 55, 40)
-            CustomApp = @(28, 48, 40, 19, 86, 27, 90)
-            SQLServer = @(90, 48, 40, 19, 86, 27, 90)
-            ActiveDirectory = @(65, 59, 80, 81, 56, 55, 40)
-            WindowsServer = @(28, 48, 40, 19, 86, 27, 90)
-            Docker = @(90, 48, 40, 19, 86, 27, 90)
-            Kubernetes = @(65, 59, 80, 81, 56, 55, 40)
-            Azure = @(28, 48, 40, 19, 86, 27, 90)
-            AWS = @(90, 48, 40, 19, 86, 27, 90)
-        }
-
-        # Generate HTML report
-        $html = @"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Enhanced Security Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .chart-container { margin: 20px 0; }
-        .issue-list { margin: 20px 0; }
-        .recommendation-list { margin: 20px 0; }
-        .risk-score { font-size: 24px; font-weight: bold; color: #ff0000; }
-        .trend-chart { height: 300px; }
-        .security-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .security-card { padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
-        .security-card h3 { margin-top: 0; }
-        .security-card p { margin: 10px 0; }
-        .security-card .score { font-size: 18px; font-weight: bold; }
-        .security-card .score.high { color: #ff0000; }
-        .security-card .score.medium { color: #ffa500; }
-        .security-card .score.low { color: #00ff00; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Enhanced Security Report</h1>
-        <p>Generated on: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
-
-        <div class="security-matrix">
-            <div class="security-card">
-                <h3>Network Security</h3>
-                <p>Issues Found: $($NetworkResults.SecurityIssues.Count)</p>
-                <p class="score $(if ($riskScores.Network -gt 50) { 'high' } elseif ($riskScores.Network -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.Network)</p>
-                <div class="chart-container">
-                    <canvas id="networkChart"></canvas>
-                </div>
-            </div>
-
-            <div class="security-card">
-                <h3>System Security</h3>
-                <p>Issues Found: $($SystemResults.SecurityIssues.Count)</p>
-                <p class="score $(if ($riskScores.System -gt 50) { 'high' } elseif ($riskScores.System -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.System)</p>
-                <div class="chart-container">
-                    <canvas id="systemChart"></canvas>
-                </div>
-            </div>
-
-            <div class="security-card">
-                <h3>Application Security</h3>
-                <p>Issues Found: $($ApplicationResults.SecurityIssues.Count)</p>
-                <p class="score $(if ($riskScores.Application -gt 50) { 'high' } elseif ($riskScores.Application -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.Application)</p>
-                <div class="chart-container">
-                    <canvas id="applicationChart"></canvas>
-                </div>
-            </div>
-
-            <div class="security-card">
-                <h3>Cloud Security</h3>
-                <p>Issues Found: $($CloudResults.SecurityIssues.Count)</p>
-                <p class="score $(if ($riskScores.Cloud -gt 50) { 'high' } elseif ($riskScores.Cloud -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.Cloud)</p>
-                <div class="chart-container">
-                    <canvas id="cloudChart"></canvas>
-                </div>
-            </div>
-
-            <div class="security-card">
-                <h3>Container Security</h3>
-                <p>Issues Found: $($DockerResults.SecurityIssues.Count + $KubernetesResults.SecurityIssues.Count)</p>
-                <p class="score $(if (($riskScores.Docker + $riskScores.Kubernetes) -gt 50) { 'high' } elseif (($riskScores.Docker + $riskScores.Kubernetes) -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.Docker + $riskScores.Kubernetes)</p>
-                <div class="chart-container">
-                    <canvas id="containerChart"></canvas>
-                </div>
-            </div>
-
-            <div class="security-card">
-                <h3>Database Security</h3>
-                <p>Issues Found: $($DatabaseResults.SecurityIssues.Count + $SQLServerResults.SecurityIssues.Count)</p>
-                <p class="score $(if (($riskScores.Database + $riskScores.SQLServer) -gt 50) { 'high' } elseif (($riskScores.Database + $riskScores.SQLServer) -gt 20) { 'medium' } else { 'low' })">Risk Score: $($riskScores.Database + $riskScores.SQLServer)</p>
-                <div class="chart-container">
-                    <canvas id="databaseChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <h2>Detailed Findings</h2>
-        <div class="issue-list">
-            <h3>Network Security Issues</h3>
-            <ul>
-                $(foreach ($issue in $NetworkResults.SecurityIssues) { "<li>$issue</li>" })
-            </ul>
-
-            <h3>System Security Issues</h3>
-            <ul>
-                $(foreach ($issue in $SystemResults.SecurityIssues) { "<li>$issue</li>" })
-            </ul>
-
-            <h3>Application Security Issues</h3>
-            <ul>
-                $(foreach ($issue in $ApplicationResults.SecurityIssues) { "<li>$issue</li>" })
-            </ul>
-
-            <h3>Cloud Security Issues</h3>
-            <ul>
-        [Parameter(Mandatory=$true)]
-        [string]$Target,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$NetworkChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SystemChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ApplicationChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ComplianceChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$RegistryChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ServiceChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$AntivirusChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$UpdateChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$BrowserChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$WhitelistChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$EmailChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ShareChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$DatabaseChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$CloudChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$WebServerChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$DbConnectionChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SecurityHeaderChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SharePointChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ExchangeChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$CustomAppChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SQLServerChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ADChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$WindowsServerChecks
-    )
-    
-    try {
-        $reportFile = "$reportPath\enhanced_security_report_$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').html"
-        
-        # Generate security issues by category
-        $securityIssuesByCategory = @{
-            "Network" = $NetworkChecks.SecurityIssues.Count
-            "System" = $SystemChecks.SecurityIssues.Count
-            "Application" = $ApplicationChecks.SecurityIssues.Count
-            "Database" = $DatabaseChecks.SecurityIssues.Count
-            "Cloud" = $CloudChecks.SecurityIssues.Count
-            "WebServer" = $WebServerChecks.SecurityIssues.Count
-            "DbConnection" = $DbConnectionChecks.SecurityIssues.Count
-            "SecurityHeaders" = $SecurityHeaderChecks.SecurityIssues.Count
-            "SharePoint" = $SharePointChecks.SecurityIssues.Count
-            "Exchange" = $ExchangeChecks.SecurityIssues.Count
-            "CustomApp" = $CustomAppChecks.SecurityIssues.Count
-            "SQLServer" = $SQLServerChecks.SecurityIssues.Count
-            "ActiveDirectory" = $ADChecks.SecurityIssues.Count
-            "WindowsServer" = $WindowsServerChecks.SecurityIssues.Count
-        }
-        
-        # Generate risk scores
-        $riskScores = @{
-            "Network" = $NetworkChecks.SecurityIssues.Count * 10
-            "System" = $SystemChecks.SecurityIssues.Count * 8
-            "Application" = $ApplicationChecks.SecurityIssues.Count * 7
-            "Database" = $DatabaseChecks.SecurityIssues.Count * 9
-            "Cloud" = $CloudChecks.SecurityIssues.Count * 6
-            "WebServer" = $WebServerChecks.SecurityIssues.Count * 8
-            "DbConnection" = $DbConnectionChecks.SecurityIssues.Count * 9
-            "SecurityHeaders" = $SecurityHeaderChecks.SecurityIssues.Count * 5
-            "SharePoint" = $SharePointChecks.SecurityIssues.Count * 8
-            "Exchange" = $ExchangeChecks.SecurityIssues.Count * 9
-            "CustomApp" = $CustomAppChecks.SecurityIssues.Count * 7
-            "SQLServer" = $SQLServerChecks.SecurityIssues.Count * 9
-            "ActiveDirectory" = $ADChecks.SecurityIssues.Count * 10
-            "WindowsServer" = $WindowsServerChecks.SecurityIssues.Count * 8
-        }
-        
-        # Generate vulnerability trend data
-        $vulnerabilityTrend = @{
-            "Dates" = @()
-            "Critical" = @()
-            "High" = @()
-            "Medium" = @()
-            "Low" = @()
-        }
-        
-        $reports = Get-ChildItem -Path $reportPath -Filter "enhanced_security_report_*.html" | Sort-Object LastWriteTime -Descending | Select-Object -First 10
-        foreach ($report in $reports) {
-            $vulnerabilityTrend.Dates += $report.LastWriteTime.ToString("yyyy-MM-dd")
-            $content = Get-Content $report.FullName
-            $vulnerabilityTrend.Critical += ($content | Select-String "Critical").Count
-            $vulnerabilityTrend.High += ($content | Select-String "High").Count
-            $vulnerabilityTrend.Medium += ($content | Select-String "Medium").Count
-            $vulnerabilityTrend.Low += ($content | Select-String "Low").Count
-        }
-        
-        $html = @"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Enhanced Security Assessment Report</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2, h3 { color: #2c3e50; }
-        .section { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
-        .critical { color: #e74c3c; }
-        .high { color: #e67e22; }
-        .medium { color: #f1c40f; }
-        .low { color: #2ecc71; }
-        .check-item { margin: 10px 0; padding: 5px; border-left: 3px solid #3498db; }
-        .recommendation { background-color: #f8f9fa; padding: 10px; margin: 5px 0; }
-        .summary { background-color: #e8f4f8; padding: 15px; margin: 10px 0; }
-        .chart { margin: 20px 0; }
-        .chart-container { width: 50%; margin: 20px auto; }
-        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-        .heatmap-cell { padding: 10px; text-align: center; }
-        .bubble-chart { height: 400px; }
-    </style>
-</head>
-<body>
-    <h1>Enhanced Security Assessment Report</h1>
-    <p>Target: $Target</p>
-    <p>Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
-    
-    <div class="summary">
-        <h2>Executive Summary</h2>
-        <p>This report provides a comprehensive security assessment of the target system, including network security, system security, application security, compliance, and various service-specific security checks.</p>
-        
-        <div class="chart-grid">
-            <div class="chart-container">
-                <canvas id="securityIssuesChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="riskDistributionChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="vulnerabilityTrendChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="riskBubbleChart"></canvas>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Security Check Sections -->
-    <div class="section">
-        <h2>Network Security</h2>
-        <div class="check-item">
-            <h3>Network Settings</h3>
-            <pre>$($NetworkChecks.NetworkSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($NetworkChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <!-- Add sections for all other security checks -->
-    
-    <script>
-        // Security Issues Chart
-        const ctx1 = document.getElementById('securityIssuesChart').getContext('2d');
-        new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: Object.keys($securityIssuesByCategory),
-                datasets: [{
-                    label: 'Security Issues by Category',
-                    data: Object.values($securityIssuesByCategory),
-                    backgroundColor: [
-                        '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71',
-                        '#3498db', '#9b59b6', '#1abc9c', '#34495e',
-                        '#16a085', '#2980b9', '#8e44ad', '#27ae60',
-                        '#c0392b', '#d35400'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-        
-        // Risk Distribution Chart
-        const ctx2 = document.getElementById('riskDistributionChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'pie',
-            data: {
-                labels: Object.keys($riskScores),
-                datasets: [{
-                    data: Object.values($riskScores),
-                    backgroundColor: [
-                        '#e74c3c', '#e67e22', '#f1c40f', '#2ecc71',
-                        '#3498db', '#9b59b6', '#1abc9c', '#34495e',
-                        '#16a085', '#2980b9', '#8e44ad', '#27ae60',
-                        '#c0392b', '#d35400'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-        
-        // Vulnerability Trend Chart
-        const ctx3 = document.getElementById('vulnerabilityTrendChart').getContext('2d');
-        new Chart(ctx3, {
-            type: 'line',
-            data: {
-                labels: ['$($vulnerabilityTrend.Dates -join "','")'],
-                datasets: [
-                    {
-                        label: 'Critical',
-                        data: [$($vulnerabilityTrend.Critical -join ',')],
-                        borderColor: 'rgba(231, 76, 60, 1)',
-# Import required modules
-Import-Module PSLogging
-Import-Module security_logging
-
-# Initialize logging
-$logPath = "C:\SecurityTools\Logs\advanced_security_checks_$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').log"
-Initialize-Logging -LogPath $logPath
-
-# Configuration
-$configPath = "C:\SecurityTools\Configs\advanced_security_checks_config.json"
-$reportPath = "C:\SecurityTools\Reports\"
-
-# Create necessary directories
-if (-not (Test-Path $reportPath)) {
-    New-Item -ItemType Directory -Path $reportPath -Force
-    Write-Log -Message "Created reports directory at $reportPath" -Level Info
+# Import required modules with error handling
+try {
+    Import-Module PSLogging -ErrorAction Stop
+    Write-Host "PSLogging module loaded successfully" -ForegroundColor Green
+} catch {
+    Write-Warning "PSLogging module not found. Installing..."
+    Install-Module PSLogging -Force -AllowClobber -Scope CurrentUser
+    Import-Module PSLogging
 }
 
-# Function to perform advanced security checks
-function Start-AdvancedSecurityChecks {
-    param (
+try {
+    # Attempt to load custom security logging module
+    Import-Module security_logging -ErrorAction SilentlyContinue
+} catch {
+    Write-Host "security_logging module not available, using built-in logging" -ForegroundColor Yellow
+}
+
+# Script metadata
+$ScriptVersion = "2.0"
+$ScriptName = "Advanced Security Assessment Tool"
+$Author = "Security Team"
+$LastUpdated = "2024-01-28"
+
+# ============================================
+# CONFIGURATION MANAGEMENT
+# ============================================
+
+# Default configuration paths
+$Config = @{
+    BasePath = "C:\SecurityTools"
+    LogPath = "C:\SecurityTools\Logs"
+    ReportPath = "C:\SecurityTools\Reports"
+    ConfigPath = "C:\SecurityTools\Configs"
+    CachePath = "C:\SecurityTools\Cache"
+    ConfigFile = "advanced_security_config.json"
+    DefaultTarget = $env:COMPUTERNAME
+    DefaultCheckType = "Comprehensive"
+    LogLevel = "Detailed"
+    MaxReportHistory = 30
+    EnableAutoUpdates = $true
+    EnableEmailNotifications = $false
+    EnableRealTimeMonitoring = $false
+    RiskThreshold = "High"
+}
+
+# Initialize configuration system
+function Initialize-Configuration {
+    <#
+    .SYNOPSIS
+    Initializes configuration directories and files
+    #>
+    
+    Write-Log -Message "Initializing configuration system" -Level Info
+    
+    # Create all required directories
+    $directories = @(
+        $Config.BasePath,
+        $Config.LogPath,
+        $Config.ReportPath,
+        $Config.ConfigPath,
+        $Config.CachePath
+    )
+    
+    foreach ($dir in $directories) {
+        if (-not (Test-Path $dir)) {
+            New-Item -ItemType Directory -Path $dir -Force | Out-Null
+            Write-Log -Message "Created directory: $dir" -Level Info
+        }
+    }
+    
+    # Create default configuration file if it doesn't exist
+    $configFile = Join-Path $Config.ConfigPath $Config.ConfigFile
+    if (-not (Test-Path $configFile)) {
+        $defaultConfig = @{
+            General = @{
+                ScriptVersion = $ScriptVersion
+                LastRun = $null
+                AutoSaveReports = $true
+                EnableLogRotation = $true
+                MaxLogSizeMB = 50
+                LogRetentionDays = 90
+            }
+            Scanning = @{
+                DefaultPortRange = "1-1024,1433,3306,3389,8080,8443"
+                ScanTimeoutSeconds = 5
+                ConcurrentScans = 10
+                EnableServiceDetection = $true
+                EnableOSDetection = $true
+            }
+            Reporting = @{
+                DefaultFormat = "HTML"
+                IncludeExecutiveSummary = $true
+                IncludeDetailedFindings = $true
+                IncludeRemediationSteps = $true
+                EnableCharts = $true
+                EnableTrendAnalysis = $true
+                RiskScoreWeights = @{
+                    Critical = 10
+                    High = 7
+                    Medium = 4
+                    Low = 1
+                }
+            }
+            Notifications = @{
+                EnableEmailAlerts = $false
+                EnableSlackNotifications = $false
+                EnableTeamsNotifications = $false
+                CriticalRiskThreshold = "High"
+            }
+            Checks = @{
+                EnableNetworkChecks = $true
+                EnableSystemChecks = $true
+                EnableApplicationChecks = $true
+                EnableComplianceChecks = $true
+                EnableDatabaseChecks = $true
+                EnableCloudChecks = $true
+                EnableContainerChecks = $true
+                EnableWebChecks = $true
+            }
+        }
+        
+        $defaultConfig | ConvertTo-Json -Depth 10 | Out-File -FilePath $configFile -Encoding UTF8
+        Write-Log -Message "Created default configuration file: $configFile" -Level Info
+    }
+    
+    # Load configuration
+    $loadedConfig = Get-Content $configFile | ConvertFrom-Json -AsHashtable
+    $Config = $Config + $loadedConfig
+    
+    Write-Log -Message "Configuration loaded successfully" -Level Info
+    return $true
+}
+
+# ============================================
+# ENHANCED LOGGING SYSTEM
+# ============================================
+
+# Logging configuration
+$LoggingConfig = @{
+    LogFile = Join-Path $Config.LogPath "advanced_security_$(Get-Date -Format 'yyyy-MM-dd').log"
+    MaxLogSize = 50MB
+    LogRetentionDays = 90
+    EnableConsoleOutput = $true
+    EnableFileOutput = $true
+    LogLevels = @("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")
+}
+
+# Enhanced logging function
+function Write-EnhancedLog {
+    <#
+    .SYNOPSIS
+    Enhanced logging function with multiple output options
+    .PARAMETER Message
+    The message to log
+    .PARAMETER Level
+    Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    .PARAMETER Component
+    Component or module name
+    .PARAMETER Exception
+    Exception object for error logging
+    #>
+    
+    param(
         [Parameter(Mandatory=$true)]
-        [string]$Target,
+        [string]$Message,
         
         [Parameter(Mandatory=$false)]
-        [string]$CheckType = "Full"
+        [ValidateSet("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")]
+        [string]$Level = "INFO",
+        
+        [Parameter(Mandatory=$false)]
+        [string]$Component = "Main",
+        
+        [Parameter(Mandatory=$false)]
+        [Exception]$Exception = $null
     )
     
-    try {
-        Write-Log -Message "Starting advanced security checks for target: $Target" -Level Info
-        
-        # 1. Network Security Checks
-        $networkChecks = @{
-            "PortScan" = Test-NetworkPorts -Target $Target
-            "FirewallRules" = Test-FirewallConfiguration
-            "NetworkServices" = Test-NetworkServices
-            "DNSConfiguration" = Test-DNSConfiguration
-            "SSLConfiguration" = Test-SSLConfiguration -Target $Target
-        }
-        
-        # 2. System Security Checks
-        $systemChecks = @{
-            "UserAccounts" = Test-UserAccountSecurity
-            "PasswordPolicy" = Test-PasswordPolicy
-            "FilePermissions" = Test-FileSystemPermissions
-            "RegistrySecurity" = Test-RegistrySecurity
-            "ServiceConfiguration" = Test-ServiceSecurity
-        }
-        
-        # 3. Application Security Checks
-        $applicationChecks = @{
-            "WebSecurity" = Test-WebApplicationSecurity -Target $Target
-            "DatabaseSecurity" = Test-DatabaseSecurity
-            "APISecurity" = Test-APISecurity -Target $Target
-            "Authentication" = Test-AuthenticationMechanisms
-            "Authorization" = Test-AuthorizationControls
-        }
-        
-        # 4. Compliance Checks
-        $complianceChecks = @{
-            "GDPR" = Test-GDPRCompliance
-            "PCI" = Test-PCICompliance
-            "HIPAA" = Test-HIPAACompliance
-            "ISO27001" = Test-ISO27001Compliance
-        }
-        
-        # Generate detailed report
-        $reportFile = New-DetailedSecurityReport -Target $Target -NetworkChecks $networkChecks -SystemChecks $systemChecks -ApplicationChecks $applicationChecks -ComplianceChecks $complianceChecks
-        
-        Write-Log -Message "Completed advanced security checks" -Level Info
-        return $reportFile
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss.fff"
+    $logEntry = "$timestamp [$Level] [$Component] $Message"
+    
+    if ($Exception) {
+        $logEntry += "`nException: $($Exception.Message)`nStackTrace: $($Exception.StackTrace)"
     }
-    catch {
-        Write-Log -Message "Failed to complete advanced security checks: $_" -Level Error
-        return $null
+    
+    # Console output with colors
+    if ($LoggingConfig.EnableConsoleOutput) {
+        $colorMap = @{
+            "DEBUG" = "Gray"
+            "INFO" = "White"
+            "WARNING" = "Yellow"
+            "ERROR" = "Red"
+            "CRITICAL" = "DarkRed"
+        }
+        
+        Write-Host $logEntry -ForegroundColor $colorMap[$Level]
+    }
+    
+    # File output
+    if ($LoggingConfig.EnableFileOutput) {
+        # Check log rotation
+        if (Test-Path $LoggingConfig.LogFile) {
+            $logFile = Get-Item $LoggingConfig.LogFile
+            if ($logFile.Length -gt $LoggingConfig.MaxLogSize) {
+                $archiveFile = $LoggingConfig.LogFile -replace '\.log$', "_$(Get-Date -Format 'yyyyMMdd_HHmmss').log"
+                Move-Item $LoggingConfig.LogFile $archiveFile
+                Write-EnhancedLog -Message "Log file rotated: $archiveFile" -Level INFO -Component "Logging"
+            }
+        }
+        
+        $logEntry | Out-File -FilePath $LoggingConfig.LogFile -Append -Encoding UTF8
+    }
+    
+    # Optional: Send to external logging system (Splunk, ELK, etc.)
+    if ($Config.Notifications.EnableExternalLogging) {
+        # Implementation for external logging systems
+        # This is a placeholder for integration
     }
 }
 
-# Function to generate detailed security report
-function New-DetailedSecurityReport {
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$Target,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$NetworkChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SystemChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ApplicationChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ComplianceChecks
-    )
-    
-    try {
-        $reportFile = "$reportPath\detailed_security_report_$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').html"
-        
-        $html = @"
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detailed Security Assessment Report</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2, h3 { color: #2c3e50; }
-        .section { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
-        .critical { color: #e74c3c; }
-        .high { color: #e67e22; }
-        .medium { color: #f1c40f; }
-        .low { color: #2ecc71; }
-        .check-item { margin: 10px 0; padding: 5px; border-left: 3px solid #3498db; }
-        .recommendation { background-color: #f8f9fa; padding: 10px; margin: 5px 0; }
-    </style>
-</head>
-<body>
-    <h1>Detailed Security Assessment Report</h1>
-    <p>Target: $Target</p>
-    <p>Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
-    
-    <div class="section">
-        <h2>Network Security Assessment</h2>
-        <div class="check-item">
-            <h3>Port Scan Results</h3>
-            <pre>$($NetworkChecks.PortScan | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Firewall Configuration</h3>
-            <pre>$($NetworkChecks.FirewallRules | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Network Services</h3>
-            <pre>$($NetworkChecks.NetworkServices | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>DNS Configuration</h3>
-            <pre>$($NetworkChecks.DNSConfiguration | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>SSL Configuration</h3>
-            <pre>$($NetworkChecks.SSLConfiguration | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>System Security Assessment</h2>
-        <div class="check-item">
-            <h3>User Account Security</h3>
-            <pre>$($SystemChecks.UserAccounts | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Password Policy</h3>
-            <pre>$($SystemChecks.PasswordPolicy | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>File System Permissions</h3>
-            <pre>$($SystemChecks.FilePermissions | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Registry Security</h3>
-            <pre>$($SystemChecks.RegistrySecurity | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Service Security</h3>
-            <pre>$($SystemChecks.ServiceConfiguration | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Application Security Assessment</h2>
-        <div class="check-item">
-            <h3>Web Application Security</h3>
-            <pre>$($ApplicationChecks.WebSecurity | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Database Security</h3>
-            <pre>$($ApplicationChecks.DatabaseSecurity | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>API Security</h3>
-            <pre>$($ApplicationChecks.APISecurity | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Authentication Mechanisms</h3>
-            <pre>$($ApplicationChecks.Authentication | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Authorization Controls</h3>
-            <pre>$($ApplicationChecks.Authorization | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Compliance Assessment</h2>
-        <div class="check-item">
-            <h3>GDPR Compliance</h3>
-            <pre>$($ComplianceChecks.GDPR | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>PCI Compliance</h3>
-            <pre>$($ComplianceChecks.PCI | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>HIPAA Compliance</h3>
-            <pre>$($ComplianceChecks.HIPAA | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>ISO27001 Compliance</h3>
-            <pre>$($ComplianceChecks.ISO27001 | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Recommendations</h2>
-        <div class="recommendation">
-            <h3>Critical Issues</h3>
-            <ul>
-                <li>Address critical vulnerabilities immediately</li>
-                <li>Implement missing security controls</li>
-                <li>Update security configurations</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>High Priority</h3>
-            <ul>
-                <li>Enhance security monitoring</li>
-                <li>Improve access controls</li>
-                <li>Update security policies</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>Medium Priority</h3>
-            <ul>
-                <li>Implement additional security measures</li>
-                <li>Enhance logging capabilities</li>
-                <li>Improve documentation</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>Low Priority</h3>
-            <ul>
-                <li>Review security configurations</li>
-                <li>Update documentation</li>
-                <li>Plan future improvements</li>
-            </ul>
-        </div>
-    </div>
-</body>
-</html>
-"@
-        
-        $html | Out-File -FilePath $reportFile -Encoding UTF8
-        Write-Log -Message "Generated detailed security report at $reportFile" -Level Info
-        return $reportFile
-    }
-    catch {
-        Write-Log -Message "Failed to generate detailed security report: $_" -Level Error
-        return $null
-    }
-}
+# ============================================
+# SECURITY CHECK MODULES
+# ============================================
 
-# Function to test network ports
-function Test-NetworkPorts {
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$Target
-    )
-    
-    try {
-        Write-Log -Message "Testing network ports for target: $Target" -Level Info
+# Network Security Module
+class NetworkSecurityModule {
+    [hashtable] PerformChecks([string]$Target) {
+        Write-EnhancedLog -Message "Starting network security checks for: $Target" -Level INFO -Component "NetworkSecurity"
         
         $results = @{
-            "OpenPorts" = @()
-            "FilteredPorts" = @()
-            "ClosedPorts" = @()
-            "VulnerablePorts" = @()
+            Timestamp = Get-Date
+            Target = $Target
+            Checks = @()
+            Findings = @()
+            RiskScore = 0
+            Status = "Completed"
         }
         
-        # Common ports to check
-        $commonPorts = @(21, 22, 23, 25, 53, 80, 443, 445, 1433, 3306, 3389, 8080)
+        try {
+            # 1. Port Scanning
+            $openPorts = $this.ScanPorts($Target)
+            $results.Checks += @{
+                Name = "Port Scan"
+                Status = "Completed"
+                Details = $openPorts
+            }
+            
+            # 2. Firewall Analysis
+            $firewallStatus = $this.CheckFirewall()
+            $results.Checks += @{
+                Name = "Firewall Analysis"
+                Status = "Completed"
+                Details = $firewallStatus
+            }
+            
+            # 3. Network Services
+            $services = $this.AnalyzeNetworkServices()
+            $results.Checks += @{
+                Name = "Network Services Analysis"
+                Status = "Completed"
+                Details = $services
+            }
+            
+            # 4. DNS Security
+            $dnsSecurity = $this.CheckDNSSecurity($Target)
+            $results.Checks += @{
+                Name = "DNS Security"
+                Status = "Completed"
+                Details = $dnsSecurity
+            }
+            
+            # 5. SSL/TLS Analysis
+            $sslAnalysis = $this.AnalyzeSSL($Target)
+            $results.Checks += @{
+                Name = "SSL/TLS Analysis"
+                Status = "Completed"
+                Details = $sslAnalysis
+            }
+            
+            # Calculate risk score
+            $results.RiskScore = $this.CalculateRiskScore($results.Checks)
+            
+        } catch {
+            Write-EnhancedLog -Message "Network security checks failed: $_" -Level ERROR -Component "NetworkSecurity" -Exception $_
+            $results.Status = "Failed"
+            $results.Findings += "Network checks failed: $_"
+        }
+        
+        return $results
+    }
+    
+    [array] ScanPorts([string]$Target) {
+        $openPorts = @()
+        $commonPorts = @(21, 22, 23, 25, 53, 80, 443, 445, 1433, 3306, 3389, 8080, 8443)
         
         foreach ($port in $commonPorts) {
             $tcpClient = New-Object System.Net.Sockets.TcpClient
@@ -798,1348 +307,961 @@ function Test-NetworkPorts {
             $wait = $connection.AsyncWaitHandle.WaitOne(1000, $false)
             
             if ($wait) {
-                $results.OpenPorts += $port
-                # Check for known vulnerabilities
-                $vulnerabilities = Test-PortVulnerabilities -Target $Target -Port $port
-                if ($vulnerabilities) {
-                    $results.VulnerablePorts += @{
-                        "Port" = $port
-                        "Vulnerabilities" = $vulnerabilities
+                try {
+                    $tcpClient.EndConnect($connection)
+                    $openPorts += @{
+                        Port = $port
+                        Service = $this.GetServiceName($port)
+                        Status = "Open"
+                        Risk = $this.AssessPortRisk($port)
                     }
+                } catch {
+                    # Port might be filtered
                 }
-            }
-            else {
-                $results.FilteredPorts += $port
             }
             
             $tcpClient.Close()
         }
         
-        Write-Log -Message "Completed network port testing" -Level Info
-        return $results
+        return $openPorts
     }
-    catch {
-        Write-Log -Message "Failed to test network ports: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test firewall configuration
-function Test-FirewallConfiguration {
-    try {
-        Write-Log -Message "Testing firewall configuration" -Level Info
-        
-        $results = @{
-            "FirewallStatus" = $null
-            "InboundRules" = @()
-            "OutboundRules" = @()
-            "SecurityIssues" = @()
-        }
-        
-        # Check Windows Firewall status
-        $firewallStatus = Get-NetFirewallProfile
-        $results.FirewallStatus = $firewallStatus
-        
-        # Check inbound rules
-        $inboundRules = Get-NetFirewallRule -Direction Inbound | Where-Object { $_.Enabled -eq $true }
-        $results.InboundRules = $inboundRules
-        
-        # Check outbound rules
-        $outboundRules = Get-NetFirewallRule -Direction Outbound | Where-Object { $_.Enabled -eq $true }
-        $results.OutboundRules = $outboundRules
-        
-        # Check for security issues
-        $securityIssues = @()
-        
-        # Check for overly permissive rules
-        $permissiveRules = $inboundRules | Where-Object { $_.Action -eq "Allow" -and $_.Profile -eq "Any" }
-        if ($permissiveRules) {
-            $securityIssues += "Found overly permissive inbound rules"
-        }
-        
-        # Check for missing essential rules
-        $essentialPorts = @(80, 443, 53)
-        foreach ($port in $essentialPorts) {
-            $hasRule = $inboundRules | Where-Object { $_.LocalPort -eq $port }
-            if (-not $hasRule) {
-                $securityIssues += "Missing inbound rule for port $port"
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        
-        Write-Log -Message "Completed firewall configuration testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test firewall configuration: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test user account security
-function Test-UserAccountSecurity {
-    try {
-        Write-Log -Message "Testing user account security" -Level Info
-        
-        $results = @{
-            "UserAccounts" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Get all user accounts
-        $users = Get-WmiObject -Class Win32_UserAccount
-        $results.UserAccounts = $users
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        foreach ($user in $users) {
-            # Check for disabled accounts
-            if ($user.Disabled -eq $false) {
-                $securityIssues += "Account $($user.Name) is enabled but may not be needed"
-                $recommendations += "Consider disabling account $($user.Name) if not in use"
-            }
-            
-            # Check for password expiration
-            $passwordInfo = Get-ADUser -Identity $user.Name -Properties PasswordNeverExpires, PasswordLastSet
-            if ($passwordInfo.PasswordNeverExpires -eq $true) {
-                $securityIssues += "Account $($user.Name) has non-expiring password"
-                $recommendations += "Enable password expiration for account $($user.Name)"
-            }
-            
-            # Check for admin privileges
-            $isAdmin = $user.Name -in (Get-LocalGroupMember -Group "Administrators").Name
-            if ($isAdmin) {
-                $securityIssues += "Account $($user.Name) has administrative privileges"
-                $recommendations += "Review administrative privileges for account $($user.Name)"
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed user account security testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test user account security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test password policy
-function Test-PasswordPolicy {
-    try {
-        Write-Log -Message "Testing password policy" -Level Info
-        
-        $results = @{
-            "CurrentPolicy" = $null
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Get current password policy
-        $policy = Get-ADDefaultDomainPasswordPolicy
-        $results.CurrentPolicy = $policy
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        # Check minimum password length
-        if ($policy.MinPasswordLength -lt 12) {
-            $securityIssues += "Minimum password length is less than 12 characters"
-            $recommendations += "Increase minimum password length to at least 12 characters"
-        }
-        
-        # Check password complexity
-        if (-not $policy.ComplexityEnabled) {
-            $securityIssues += "Password complexity is not enabled"
-            $recommendations += "Enable password complexity requirements"
-        }
-        
-        # Check password history
-        if ($policy.PasswordHistoryCount -lt 24) {
-            $securityIssues += "Password history is less than 24 passwords"
-            $recommendations += "Increase password history to at least 24 passwords"
-        }
-        
-        # Check maximum password age
-        if ($policy.MaxPasswordAge -gt 90) {
-            $securityIssues += "Maximum password age is greater than 90 days"
-            $recommendations += "Decrease maximum password age to 90 days or less"
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed password policy testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test password policy: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test file system permissions
-function Test-FileSystemPermissions {
-    try {
-        Write-Log -Message "Testing file system permissions" -Level Info
-        
-        $results = @{
-            "CriticalPaths" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Critical paths to check
-        $criticalPaths = @(
-            "C:\Windows\System32",
-            "C:\Program Files",
-            "C:\Program Files (x86)",
-            "C:\Users"
-        )
-        
-        foreach ($path in $criticalPaths) {
-            if (Test-Path $path) {
-                $acl = Get-Acl $path
-                $results.CriticalPaths += @{
-                    "Path" = $path
-                    "Permissions" = $acl.Access
-                }
-                
-                # Check for security issues
-                $securityIssues = @()
-                $recommendations = @()
-                
-                # Check for overly permissive permissions
-                $permissiveAccess = $acl.Access | Where-Object { $_.FileSystemRights -match "FullControl|Modify" }
-                if ($permissiveAccess) {
-                    $securityIssues += "Path $path has overly permissive permissions"
-                    $recommendations += "Review and restrict permissions for path $path"
-                }
-                
-                # Check for inheritance
-                if ($acl.AccessInheritance -eq "None") {
-                    $securityIssues += "Path $path has no permission inheritance"
-                    $recommendations += "Enable permission inheritance for path $path"
-                }
-                
-                $results.SecurityIssues += $securityIssues
-                $results.Recommendations += $recommendations
-            }
-        }
-        
-        Write-Log -Message "Completed file system permissions testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test file system permissions: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test registry security
-function Test-RegistrySecurity {
-    try {
-        Write-Log -Message "Testing registry security" -Level Info
-        
-        $results = @{
-            "CriticalKeys" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Critical registry keys to check
-        $criticalKeys = @(
-            "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
-            "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce",
-            "HKLM:\SYSTEM\CurrentControlSet\Services",
-            "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon",
-            "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
-        )
-        
-        foreach ($key in $criticalKeys) {
-            if (Test-Path $key) {
-                $acl = Get-Acl $key
-                $results.CriticalKeys += @{
-                    "Key" = $key
-                    "Permissions" = $acl.Access
-                    "Values" = Get-ItemProperty -Path $key
-                }
-                
-                # Check for security issues
-                $securityIssues = @()
-                $recommendations = @()
-                
-                # Check for overly permissive permissions
-                $permissiveAccess = $acl.Access | Where-Object { $_.RegistryRights -match "FullControl|ChangePermissions" }
-                if ($permissiveAccess) {
-                    $securityIssues += "Registry key $key has overly permissive permissions"
-                    $recommendations += "Restrict permissions for registry key $key"
-                }
-                
-                # Check for suspicious values
-                $suspiciousValues = Get-ItemProperty -Path $key | Where-Object { 
-                    $_.PSChildName -match "\.exe$|\.dll$|\.bat$|\.cmd$|\.vbs$|\.ps1$"
-                }
-                if ($suspiciousValues) {
-                    $securityIssues += "Registry key $key contains suspicious values"
-                    $recommendations += "Review and verify values in registry key $key"
-                }
-                
-                $results.SecurityIssues += $securityIssues
-                $results.Recommendations += $recommendations
-            }
-        }
-        
-        Write-Log -Message "Completed registry security testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test registry security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test service configuration
-function Test-ServiceSecurity {
-    try {
-        Write-Log -Message "Testing service security" -Level Info
-        
-        $results = @{
-            "CriticalServices" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Critical services to check
-        $criticalServices = @(
-            "RemoteRegistry",
-            "TelnetServer",
-            "TFTP",
-            "SNMP",
-            "IISAdmin",
-            "TerminalServices",
-            "RemoteAccess",
-            "NetBIOS",
-            "FTP",
-            "SMTP"
-        )
-        
-        foreach ($service in $criticalServices) {
-            $serviceInfo = Get-Service -Name $service -ErrorAction SilentlyContinue
-            if ($serviceInfo) {
-                $results.CriticalServices += @{
-                    "Name" = $service
-                    "Status" = $serviceInfo.Status
-                    "StartType" = $serviceInfo.StartType
-                    "Description" = $serviceInfo.Description
-                }
-                
-                # Check for security issues
-                $securityIssues = @()
-                $recommendations = @()
-                
-                # Check if service is running
-                if ($serviceInfo.Status -eq "Running") {
-                    $securityIssues += "Service $service is running"
-                    $recommendations += "Consider stopping service $service if not needed"
-                }
-                
-                # Check start type
-                if ($serviceInfo.StartType -eq "Automatic") {
-                    $securityIssues += "Service $service is set to start automatically"
-                    $recommendations += "Consider changing start type for service $service to Manual or Disabled"
-                }
-                
-                # Check service permissions
-                $serviceAcl = Get-Acl "HKLM:\SYSTEM\CurrentControlSet\Services\$service"
-                $permissiveAccess = $serviceAcl.Access | Where-Object { $_.RegistryRights -match "FullControl|ChangePermissions" }
-                if ($permissiveAccess) {
-                    $securityIssues += "Service $service has overly permissive permissions"
-                    $recommendations += "Restrict permissions for service $service"
-                }
-                
-                $results.SecurityIssues += $securityIssues
-                $results.Recommendations += $recommendations
-            }
-        }
-        
-        Write-Log -Message "Completed service security testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test service security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test antivirus status
-function Test-AntivirusStatus {
-    try {
-        Write-Log -Message "Testing antivirus status" -Level Info
-        
-        $results = @{
-            "AntivirusProducts" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Check Windows Defender status
-        $defenderStatus = Get-MpComputerStatus
-        $results.AntivirusProducts += @{
-            "Name" = "Windows Defender"
-            "Status" = $defenderStatus.AntivirusEnabled
-            "RealTimeProtection" = $defenderStatus.RealTimeProtectionEnabled
-            "LastScanTime" = $defenderStatus.LastFullScanTime
-            "LastUpdateTime" = $defenderStatus.AntispywareSignatureLastUpdated
-            "EngineVersion" = $defenderStatus.AntispywareEngineVersion
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        if (-not $defenderStatus.AntivirusEnabled) {
-            $securityIssues += "Windows Defender is not enabled"
-            $recommendations += "Enable Windows Defender antivirus"
-        }
-        
-        if (-not $defenderStatus.RealTimeProtectionEnabled) {
-            $securityIssues += "Real-time protection is not enabled"
-            $recommendations += "Enable real-time protection"
-        }
-        
-        # Check for other antivirus products
-        $otherAV = Get-WmiObject -Namespace "root\SecurityCenter2" -Class "AntiVirusProduct"
-        foreach ($av in $otherAV) {
-            $results.AntivirusProducts += @{
-                "Name" = $av.displayName
-                "Status" = $av.productState
-                "LastUpdateTime" = $av.timestamp
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed antivirus status testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test antivirus status: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test system updates
-function Test-SystemUpdates {
-    try {
-        Write-Log -Message "Testing system updates" -Level Info
-        
-        $results = @{
-            "UpdateStatus" = @()
-            "MissingUpdates" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Check Windows Update status
-        $updateSession = New-Object -ComObject Microsoft.Update.Session
-        $updateSearcher = $updateSession.CreateUpdateSearcher()
-        $searchResult = $updateSearcher.Search("IsInstalled=0 and Type='Software'")
-        
-        foreach ($update in $searchResult.Updates) {
-            $results.MissingUpdates += @{
-                "Title" = $update.Title
-                "Description" = $update.Description
-                "IsSecurityUpdate" = $update.IsSecurityUpdate
-                "Categories" = $update.Categories | ForEach-Object { $_.Name }
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        # Check last update time
-        $lastUpdate = Get-HotFix | Sort-Object -Property InstalledOn -Descending | Select-Object -First 1
-        $daysSinceUpdate = (Get-Date) - $lastUpdate.InstalledOn
-        
-        if ($daysSinceUpdate.Days -gt 30) {
-            $securityIssues += "System has not been updated in $($daysSinceUpdate.Days) days"
-            $recommendations += "Install pending updates immediately"
-        }
-        
-        # Check for critical security updates
-        $criticalUpdates = $searchResult.Updates | Where-Object { $_.IsSecurityUpdate -eq $true }
-        if ($criticalUpdates.Count -gt 0) {
-            $securityIssues += "Found $($criticalUpdates.Count) critical security updates pending"
-            $recommendations += "Install critical security updates immediately"
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed system updates testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test system updates: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test database security
-function Test-DatabaseSecurity {
-    try {
-        Write-Log -Message "Testing database security" -Level Info
-        
-        $results = @{
-            "DatabaseSettings" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Check SQL Server settings
-        $sqlPath = "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server"
-        if (Test-Path $sqlPath) {
-            $sqlInstances = Get-ChildItem $sqlPath | Where-Object { $_.Name -like "*MSSQL*" }
-            foreach ($instance in $sqlInstances) {
-                $instancePath = Join-Path $sqlPath $instance.PSChildName
-                $settings = Get-ItemProperty -Path $instancePath
-                $results.DatabaseSettings += @{
-                    "Type" = "SQL Server"
-                    "Instance" = $instance.PSChildName
-                    "Authentication" = $settings.AuthenticationMode
-                    "Encryption" = $settings.EncryptionEnabled
-                    "AuditLevel" = $settings.AuditLevel
-                }
-            }
-        }
-        
-        # Check MySQL settings
-        $mysqlPath = "HKLM:\SOFTWARE\MySQL AB"
-        if (Test-Path $mysqlPath) {
-            $mysqlInstances = Get-ChildItem $mysqlPath
-            foreach ($instance in $mysqlInstances) {
-                $instancePath = Join-Path $mysqlPath $instance.PSChildName
-                $settings = Get-ItemProperty -Path $instancePath
-                $results.DatabaseSettings += @{
-                    "Type" = "MySQL"
-                    "Instance" = $instance.PSChildName
-                    "Authentication" = $settings.AuthenticationPlugin
-                    "SSL" = $settings.SSLEnabled
-                    "AuditLog" = $settings.AuditLogEnabled
-                }
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        foreach ($db in $results.DatabaseSettings) {
-            if ($db.Type -eq "SQL Server") {
-                if ($db.Authentication -eq "Windows") {
-                    $securityIssues += "SQL Server instance '$($db.Instance)' using Windows Authentication only"
-                    $recommendations += "Enable SQL Server Authentication for instance '$($db.Instance)'"
-                }
-                if (-not $db.Encryption) {
-                    $securityIssues += "SQL Server instance '$($db.Instance)' encryption is disabled"
-                    $recommendations += "Enable encryption for SQL Server instance '$($db.Instance)'"
-                }
-            }
-            if ($db.Type -eq "MySQL") {
-                if (-not $db.SSL) {
-                    $securityIssues += "MySQL instance '$($db.Instance)' SSL is disabled"
-                    $recommendations += "Enable SSL for MySQL instance '$($db.Instance)'"
-                }
-                if (-not $db.AuditLog) {
-                    $securityIssues += "MySQL instance '$($db.Instance)' audit logging is disabled"
-                    $recommendations += "Enable audit logging for MySQL instance '$($db.Instance)'"
-                }
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed database security testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test database security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test SharePoint security
-function Test-SharePointSecurity {
-    param (
-        [string]$ServerName = $env:COMPUTERNAME
-    )
     
-    try {
-        Write-Log -Message "Starting SharePoint security check for $ServerName" -Level Info
+    [hashtable] CheckFirewall() {
+        $firewallStatus = @{
+            ProfileStatus = @{}
+            Rules = @()
+            Issues = @()
+        }
+        
+        try {
+            # Get firewall profiles
+            $profiles = Get-NetFirewallProfile
+            foreach ($profile in $profiles) {
+                $firewallStatus.ProfileStatus[$profile.Name] = @{
+                    Enabled = $profile.Enabled
+                    DefaultInboundAction = $profile.DefaultInboundAction
+                    DefaultOutboundAction = $profile.DefaultOutboundAction
+                }
+            }
+            
+            # Get firewall rules
+            $rules = Get-NetFirewallRule | Select-Object -First 50
+            $firewallStatus.Rules = $rules
+            
+            # Check for common issues
+            if ($firewallStatus.ProfileStatus.Domain.Enabled -eq $false) {
+                $firewallStatus.Issues += "Domain firewall profile is disabled"
+            }
+            
+            if ($firewallStatus.ProfileStatus.Public.DefaultInboundAction -eq "Allow") {
+                $firewallStatus.Issues += "Public profile allows inbound connections by default"
+            }
+            
+        } catch {
+            Write-EnhancedLog -Message "Firewall check failed: $_" -Level WARNING -Component "NetworkSecurity"
+        }
+        
+        return $firewallStatus
+    }
+    
+    [string] GetServiceName([int]$Port) {
+        $serviceMap = @{
+            21 = "FTP"
+            22 = "SSH"
+            23 = "Telnet"
+            25 = "SMTP"
+            53 = "DNS"
+            80 = "HTTP"
+            443 = "HTTPS"
+            445 = "SMB"
+            1433 = "MSSQL"
+            3306 = "MySQL"
+            3389 = "RDP"
+            8080 = "HTTP-Proxy"
+            8443 = "HTTPS-Alt"
+        }
+        
+        return $serviceMap[$Port] ?? "Unknown"
+    }
+    
+    [string] AssessPortRisk([int]$Port) {
+        $highRiskPorts = @(21, 23, 445, 3389)  # FTP, Telnet, SMB, RDP
+        $mediumRiskPorts = @(22, 25, 1433, 3306)  # SSH, SMTP, MSSQL, MySQL
+        
+        if ($Port -in $highRiskPorts) { return "High" }
+        if ($Port -in $mediumRiskPorts) { return "Medium" }
+        return "Low"
+    }
+    
+    [int] CalculateRiskScore([array]$Checks) {
+        $score = 0
+        
+        foreach ($check in $Checks) {
+            if ($check.Details -is [array]) {
+                foreach ($detail in $check.Details) {
+                    if ($detail.Risk -eq "High") { $score += 10 }
+                    elseif ($detail.Risk -eq "Medium") { $score += 5 }
+                    elseif ($detail.Risk -eq "Low") { $score += 2 }
+                }
+            }
+            
+            if ($check.Details.Issues -and $check.Details.Issues.Count -gt 0) {
+                $score += $check.Details.Issues.Count * 3
+            }
+        }
+        
+        return [Math]::Min($score, 100)
+    }
+}
+
+# System Security Module
+class SystemSecurityModule {
+    [hashtable] PerformChecks() {
+        Write-EnhancedLog -Message "Starting system security checks" -Level INFO -Component "SystemSecurity"
         
         $results = @{
-            SharePointSettings = @{}
-            SecurityIssues = @()
+            Timestamp = Get-Date
+            Checks = @()
+            Findings = @()
+            RiskScore = 0
+            Status = "Completed"
+        }
+        
+        try {
+            # 1. User Account Analysis
+            $userAccounts = $this.AnalyzeUserAccounts()
+            $results.Checks += @{
+                Name = "User Account Analysis"
+                Status = "Completed"
+                Details = $userAccounts
+            }
+            
+            # 2. Password Policy Review
+            $passwordPolicy = $this.CheckPasswordPolicy()
+            $results.Checks += @{
+                Name = "Password Policy Review"
+                Status = "Completed"
+                Details = $passwordPolicy
+            }
+            
+            # 3. File System Permissions
+            $filePermissions = $this.CheckFilePermissions()
+            $results.Checks += @{
+                Name = "File System Permissions"
+                Status = "Completed"
+                Details = $filePermissions
+            }
+            
+            # 4. Registry Security
+            $registrySecurity = $this.CheckRegistrySecurity()
+            $results.Checks += @{
+                Name = "Registry Security"
+                Status = "Completed"
+                Details = $registrySecurity
+            }
+            
+            # 5. Service Configuration
+            $services = $this.AnalyzeServices()
+            $results.Checks += @{
+                Name = "Service Configuration Analysis"
+                Status = "Completed"
+                Details = $services
+            }
+            
+            # 6. Patch Management
+            $patches = $this.CheckPatchStatus()
+            $results.Checks += @{
+                Name = "Patch Management"
+                Status = "Completed"
+                Details = $patches
+            }
+            
+            # Calculate risk score
+            $results.RiskScore = $this.CalculateRiskScore($results.Checks)
+            
+        } catch {
+            Write-EnhancedLog -Message "System security checks failed: $_" -Level ERROR -Component "SystemSecurity" -Exception $_
+            $results.Status = "Failed"
+            $results.Findings += "System checks failed: $_"
+        }
+        
+        return $results
+    }
+    
+    [hashtable] AnalyzeUserAccounts() {
+        $analysis = @{
+            LocalUsers = @()
+            DomainUsers = @()
+            Issues = @()
             Recommendations = @()
         }
         
-        # Check SharePoint installation
-        if (Get-Service -Name "SPTimerV4" -ErrorAction SilentlyContinue) {
-            $results.SharePointSettings.Installation = @{
-                Version = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Shared Tools\Web Server Extensions\16.0' -ErrorAction SilentlyContinue).Version
-                Services = @{
-                    TimerService = (Get-Service -Name "SPTimerV4").Status
-                    AdminService = (Get-Service -Name "SPAdminV4").Status
-                    SearchService = (Get-Service -Name "OSearch16").Status
-                }
-            }
-            
-            # Check SharePoint security settings
-            $results.SharePointSettings.Security = @{
-                ClaimsAuthentication = (Get-SPWebApplication | Where-Object { $_.UseClaimsAuthentication }).Count -gt 0
-                SSLEnabled = (Get-SPWebApplication | Where-Object { $_.Url -like "https://*" }).Count -gt 0
-                AnonymousAccess = (Get-SPWebApplication | Where-Object { $_.AllowAnonymousAccess }).Count -gt 0
-                FormsAuthentication = (Get-SPWebApplication | Where-Object { $_.UseFormsAuthentication }).Count -gt 0
-            }
-            
-            # Check for security issues
-            if (-not $results.SharePointSettings.Security.SSLEnabled) {
-                $results.SecurityIssues += "SSL not enabled for all web applications"
-                $results.Recommendations += "Enable SSL for all SharePoint web applications"
-            }
-            
-            if ($results.SharePointSettings.Security.AnonymousAccess) {
-                $results.SecurityIssues += "Anonymous access enabled"
-                $results.Recommendations += "Disable anonymous access if not required"
-            }
-        }
-        
-        Write-Log -Message "Completed SharePoint security check for $ServerName" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test SharePoint security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test Exchange security
-function Test-ExchangeSecurity {
-    param (
-        [string]$ServerName = $env:COMPUTERNAME
-    )
-    
-    try {
-        Write-Log -Message "Starting Exchange security check for $ServerName" -Level Info
-        
-        $results = @{
-            ExchangeSettings = @{}
-            SecurityIssues = @()
-            Recommendations = @()
-        }
-        
-        # Check Exchange installation
-        if (Get-Service -Name "MSExchangeIS" -ErrorAction SilentlyContinue) {
-            $results.ExchangeSettings.Installation = @{
-                Version = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\ExchangeServer\v15\Setup' -ErrorAction SilentlyContinue).Version
-                Services = @{
-                    InformationStore = (Get-Service -Name "MSExchangeIS").Status
-                    Transport = (Get-Service -Name "MSExchangeTransport").Status
-                    MailboxReplication = (Get-Service -Name "MSExchangeMailboxReplication").Status
-                }
-            }
-            
-            # Check Exchange security settings
-            $results.ExchangeSettings.Security = @{
-                TLSEnabled = (Get-ExchangeCertificate | Where-Object { $_.Services -match "SMTP" }).Count -gt 0
-                AntispamEnabled = (Get-ContentFilterConfig).Enabled
-                AntimalwareEnabled = (Get-MalwareFilteringServer).Enabled
-                OAuthEnabled = (Get-AuthConfig).OAuthEnabled
-            }
-            
-            # Check for security issues
-            if (-not $results.ExchangeSettings.Security.TLSEnabled) {
-                $results.SecurityIssues += "TLS not enabled for SMTP"
-                $results.Recommendations += "Enable TLS for SMTP communication"
-            }
-            
-            if (-not $results.ExchangeSettings.Security.AntispamEnabled) {
-                $results.SecurityIssues += "Antispam filtering not enabled"
-                $results.Recommendations += "Enable antispam filtering"
-            }
-        }
-        
-        Write-Log -Message "Completed Exchange security check for $ServerName" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test Exchange security: $_" -Level Error
-        return $null
-    }
-}
-
-# Function to test custom application security
-function Test-CustomApplicationSecurity {
-    param (
-        [string]$ApplicationPath = "C:\Program Files\CustomApp",
-        [string]$ConfigFile = "app.config"
-    )
-    
-    try {
-        Write-Log -Message "Starting custom application security check for $ApplicationPath" -Level Info
-        
-        $results = @{
-            ApplicationSettings = @{}
-            SecurityIssues = @()
-            Recommendations = @()
-        }
-        
-        # Check application files
-        if (Test-Path $ApplicationPath) {
-            $results.ApplicationSettings.Files = @{
-                Executables = Get-ChildItem -Path $ApplicationPath -Filter "*.exe" | Select-Object Name, LastWriteTime
-                ConfigFiles = Get-ChildItem -Path $ApplicationPath -Filter "*.config" | Select-Object Name, LastWriteTime
-                LogFiles = Get-ChildItem -Path $ApplicationPath -Filter "*.log" | Select-Object Name, LastWriteTime
-            }
-            
-            # Check configuration file
-            if (Test-Path "$ApplicationPath\$ConfigFile") {
-                $config = Get-Content "$ApplicationPath\$ConfigFile"
-                $results.ApplicationSettings.Configuration = @{
-                    ConnectionString = ($config | Select-String "connectionString").ToString()
-                    Authentication = ($config | Select-String "authentication").ToString()
-                    Logging = ($config | Select-String "logging").ToString()
+        try {
+            # Get local users
+            $localUsers = Get-LocalUser
+            foreach ($user in $localUsers) {
+                $analysis.LocalUsers += @{
+                    Name = $user.Name
+                    Enabled = $user.Enabled
+                    LastLogon = $user.LastLogon
+                    PasswordChangeable = $user.PasswordChangeable
+                    PasswordExpires = $user.PasswordExpires
                 }
                 
-                # Check for security issues
-                if ($results.ApplicationSettings.Configuration.ConnectionString -match "password|pwd") {
-                    $results.SecurityIssues += "Plain text credentials in configuration"
-                    $results.Recommendations += "Use encrypted connection strings or secure credential storage"
+                # Check for issues
+                if ($user.Enabled -and $user.Name -notin @("Administrator", "Guest", "DefaultAccount")) {
+                    if ($user.PasswordExpires -eq $false) {
+                        $analysis.Issues += "User '$($user.Name)' has non-expiring password"
+                    }
                 }
             }
             
-            # Check file permissions
-            $results.ApplicationSettings.Permissions = @{
-                ExecutablePermissions = (Get-Acl "$ApplicationPath\*.exe").Access
-                ConfigPermissions = (Get-Acl "$ApplicationPath\*.config").Access
-                LogPermissions = (Get-Acl "$ApplicationPath\*.log").Access
+            # Check for inactive accounts
+            $inactiveThreshold = (Get-Date).AddDays(-90)
+            $inactiveUsers = $analysis.LocalUsers | Where-Object { 
+                $_.LastLogon -and $_.LastLogon -lt $inactiveThreshold -and $_.Enabled
             }
             
-            # Check for security issues
-            if ($results.ApplicationSettings.Permissions.ExecutablePermissions | Where-Object { $_.FileSystemRights -match "FullControl|Modify" }) {
-                $results.SecurityIssues += "Overly permissive executable permissions"
-                $results.Recommendations += "Restrict executable file permissions to necessary users only"
+            if ($inactiveUsers.Count -gt 0) {
+                $analysis.Issues += "Found $($inactiveUsers.Count) inactive user accounts"
+                $analysis.Recommendations += "Review and disable inactive user accounts"
+            }
+            
+            # Check for default accounts
+            $defaultAccounts = $analysis.LocalUsers | Where-Object { 
+                $_.Name -in @("Administrator", "Guest") -and $_.Enabled
+            }
+            
+            if ($defaultAccounts.Count -gt 0) {
+                $analysis.Issues += "Default accounts are enabled"
+                $analysis.Recommendations += "Disable or rename default accounts"
+            }
+            
+        } catch {
+            Write-EnhancedLog -Message "User account analysis failed: $_" -Level WARNING -Component "SystemSecurity"
+        }
+        
+        return $analysis
+    }
+    
+    [hashtable] CheckPasswordPolicy() {
+        $policy = @{
+            CurrentSettings = $null
+            Issues = @()
+            Recommendations = @()
+            Compliance = @{
+                NIST = $false
+                CIS = $false
+                Microsoft = $false
             }
         }
         
-        Write-Log -Message "Completed custom application security check for $ApplicationPath" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test custom application security: $_" -Level Error
-        return $null
+        try {
+            # Get domain password policy
+            $domainPolicy = Get-ADDefaultDomainPasswordPolicy -ErrorAction SilentlyContinue
+            if ($domainPolicy) {
+                $policy.CurrentSettings = @{
+                    ComplexityEnabled = $domainPolicy.ComplexityEnabled
+                    LockoutDuration = $domainPolicy.LockoutDuration
+                    LockoutObservationWindow = $domainPolicy.LockoutObservationWindow
+                    LockoutThreshold = $domainPolicy.LockoutThreshold
+                    MaxPasswordAge = $domainPolicy.MaxPasswordAge
+                    MinPasswordAge = $domainPolicy.MinPasswordAge
+                    MinPasswordLength = $domainPolicy.MinPasswordLength
+                    PasswordHistoryCount = $domainPolicy.PasswordHistoryCount
+                    ReversibleEncryptionEnabled = $domainPolicy.ReversibleEncryptionEnabled
+                }
+                
+                # Check compliance
+                if ($domainPolicy.MinPasswordLength -ge 12) {
+                    $policy.Compliance.NIST = $true
+                }
+                
+                if ($domainPolicy.ComplexityEnabled -and $domainPolicy.MinPasswordLength -ge 8) {
+                    $policy.Compliance.CIS = $true
+                }
+                
+                if ($domainPolicy.LockoutThreshold -le 10) {
+                    $policy.Compliance.Microsoft = $true
+                }
+                
+                # Identify issues
+                if ($domainPolicy.MinPasswordLength -lt 8) {
+                    $policy.Issues += "Minimum password length is less than 8 characters"
+                    $policy.Recommendations += "Increase minimum password length to at least 12 characters"
+                }
+                
+                if (-not $domainPolicy.ComplexityEnabled) {
+                    $policy.Issues += "Password complexity is disabled"
+                    $policy.Recommendations += "Enable password complexity requirements"
+                }
+                
+                if ($domainPolicy.ReversibleEncryptionEnabled) {
+                    $policy.Issues += "Reversible encryption is enabled (stores passwords in plain text)"
+                    $policy.Recommendations += "Disable reversible encryption immediately"
+                }
+                
+                if ($domainPolicy.MaxPasswordAge.TotalDays -gt 90) {
+                    $policy.Issues += "Maximum password age exceeds 90 days"
+                    $policy.Recommendations += "Set maximum password age to 90 days or less"
+                }
+            }
+            
+        } catch {
+            Write-EnhancedLog -Message "Password policy check failed: $_" -Level WARNING -Component "SystemSecurity"
+        }
+        
+        return $policy
     }
 }
 
-# Function to generate enhanced security report with additional charts and analysis
-function New-EnhancedSecurityReport {
-    param (
-        [Parameter(Mandatory=$true)]
-        [string]$Target,
+# Compliance Module
+class ComplianceModule {
+    [hashtable] PerformChecks() {
+        Write-EnhancedLog -Message "Starting compliance checks" -Level INFO -Component "Compliance"
         
-        [Parameter(Mandatory=$true)]
-        [hashtable]$NetworkChecks,
+        $results = @{
+            Timestamp = Get-Date
+            Standards = @()
+            OverallCompliance = 0
+            Status = "Completed"
+        }
         
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SystemChecks,
+        try {
+            # GDPR Compliance
+            $gdpr = $this.CheckGDPRCompliance()
+            $results.Standards += @{
+                Standard = "GDPR"
+                Compliance = $gdpr.ComplianceScore
+                Findings = $gdpr.Findings
+                Recommendations = $gdpr.Recommendations
+            }
+            
+            # PCI DSS Compliance
+            $pci = $this.CheckPCICompliance()
+            $results.Standards += @{
+                Standard = "PCI DSS"
+                Compliance = $pci.ComplianceScore
+                Findings = $pci.Findings
+                Recommendations = $pci.Recommendations
+            }
+            
+            # HIPAA Compliance
+            $hipaa = $this.CheckHIPAACompliance()
+            $results.Standards += @{
+                Standard = "HIPAA"
+                Compliance = $hipaa.ComplianceScore
+                Findings = $hipaa.Findings
+                Recommendations = $hipaa.Recommendations
+            }
+            
+            # ISO 27001 Compliance
+            $iso = $this.CheckISO27001Compliance()
+            $results.Standards += @{
+                Standard = "ISO 27001"
+                Compliance = $iso.ComplianceScore
+                Findings = $iso.Findings
+                Recommendations = $iso.Recommendations
+            }
+            
+            # Calculate overall compliance
+            $totalScore = 0
+            foreach ($standard in $results.Standards) {
+                $totalScore += $standard.Compliance
+            }
+            $results.OverallCompliance = [Math]::Round($totalScore / $results.Standards.Count, 2)
+            
+        } catch {
+            Write-EnhancedLog -Message "Compliance checks failed: $_" -Level ERROR -Component "Compliance" -Exception $_
+            $results.Status = "Failed"
+        }
         
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ApplicationChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ComplianceChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$RegistryChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ServiceChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$AntivirusChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$UpdateChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$BrowserChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$WhitelistChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$EmailChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ShareChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$DatabaseChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$CloudChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$WebServerChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$DbConnectionChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SecurityHeaderChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$SharePointChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$ExchangeChecks,
-        
-        [Parameter(Mandatory=$true)]
-        [hashtable]$CustomAppChecks
-    )
+        return $results
+    }
     
-    try {
-        $reportFile = "$reportPath\enhanced_security_report_$(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').html"
-        
-        # Generate chart data
-        $securityIssuesByCategory = @{
-            "Network" = $NetworkChecks.SecurityIssues.Count
-            "System" = $SystemChecks.SecurityIssues.Count
-            "Application" = $ApplicationChecks.SecurityIssues.Count
-            "Registry" = $RegistryChecks.SecurityIssues.Count
-            "Service" = $ServiceChecks.SecurityIssues.Count
-            "Antivirus" = $AntivirusChecks.SecurityIssues.Count
-            "Updates" = $UpdateChecks.SecurityIssues.Count
-            "Browser" = $BrowserChecks.SecurityIssues.Count
-            "Whitelist" = $WhitelistChecks.SecurityIssues.Count
-            "Email" = $EmailChecks.SecurityIssues.Count
-            "Shares" = $ShareChecks.SecurityIssues.Count
-            "Database" = $DatabaseChecks.SecurityIssues.Count
-            "Cloud" = $CloudChecks.SecurityIssues.Count
-            "WebServer" = $WebServerChecks.SecurityIssues.Count
-            "DbConnection" = $DbConnectionChecks.SecurityIssues.Count
-            "SecurityHeaders" = $SecurityHeaderChecks.SecurityIssues.Count
-            "SharePoint" = $SharePointChecks.SecurityIssues.Count
-            "Exchange" = $ExchangeChecks.SecurityIssues.Count
-            "CustomApp" = $CustomAppChecks.SecurityIssues.Count
+    [hashtable] CheckGDPRCompliance() {
+        $gdprCheck = @{
+            ComplianceScore = 0
+            Findings = @()
+            Recommendations = @()
+            Requirements = @()
         }
         
-        $chartData = $securityIssuesByCategory.GetEnumerator() | ForEach-Object {
-            "{ label: '$($_.Key)', value: $($_.Value) }"
-        } -join ","
-        
-        # Generate risk distribution data
-        $riskDistribution = @{
-            "Critical" = ($NetworkChecks.SecurityIssues.Count + $SystemChecks.SecurityIssues.Count) * 0.3
-            "High" = ($ApplicationChecks.SecurityIssues.Count + $RegistryChecks.SecurityIssues.Count) * 0.25
-            "Medium" = ($ServiceChecks.SecurityIssues.Count + $AntivirusChecks.SecurityIssues.Count) * 0.25
-            "Low" = ($UpdateChecks.SecurityIssues.Count + $BrowserChecks.SecurityIssues.Count + $WhitelistChecks.SecurityIssues.Count) * 0.2
+        try {
+            # Check data protection measures
+            $gdprCheck.Requirements = @(
+                @{ Name = "Data Inventory"; Status = $this.CheckDataInventory() },
+                @{ Name = "Consent Management"; Status = $this.CheckConsentManagement() },
+                @{ Name = "Data Protection Officer"; Status = $this.CheckDPO() },
+                @{ Name = "Privacy by Design"; Status = $this.CheckPrivacyByDesign() },
+                @{ Name = "Data Breach Notification"; Status = $this.CheckBreachNotification() },
+                @{ Name = "Data Subject Rights"; Status = $this.CheckDataSubjectRights() },
+                @{ Name = "Data Transfer Safeguards"; Status = $this.CheckDataTransfer() }
+            )
+            
+            # Calculate compliance score
+            $metRequirements = ($gdprCheck.Requirements | Where-Object { $_.Status -eq $true }).Count
+            $gdprCheck.ComplianceScore = [Math]::Round(($metRequirements / $gdprCheck.Requirements.Count) * 100, 2)
+            
+            # Generate findings and recommendations
+            if ($gdprCheck.ComplianceScore -lt 80) {
+                $gdprCheck.Findings += "GDPR compliance is below acceptable threshold"
+                $gdprCheck.Recommendations += "Implement missing GDPR requirements"
+            }
+            
+        } catch {
+            Write-EnhancedLog -Message "GDPR compliance check failed: $_" -Level WARNING -Component "Compliance"
         }
         
-        $riskData = $riskDistribution.GetEnumerator() | ForEach-Object {
-            "{ label: '$($_.Key)', value: $($_.Value) }"
-        } -join ","
-        
-        # Generate compliance radar data
-        $complianceData = @{
-            "GDPR" = $ComplianceChecks.GDPRCompliance
-            "PCI" = $ComplianceChecks.PCICompliance
-            "HIPAA" = $ComplianceChecks.HIPAACompliance
-            "ISO27001" = $ComplianceChecks.ISO27001Compliance
+        return $gdprCheck
+    }
+    
+    [hashtable] CheckPCICompliance() {
+        $pciCheck = @{
+            ComplianceScore = 0
+            Findings = @()
+            Recommendations = @()
+            Requirements = @()
         }
         
-        $radarData = $complianceData.GetEnumerator() | ForEach-Object {
-            "{ label: '$($_.Key)', value: $($_.Value) }"
-        } -join ","
-        
-        # Generate trend data
-        $trendData = @{
-            "Dates" = @()
-            "Issues" = @()
+        try {
+            # Check PCI DSS requirements
+            $pciCheck.Requirements = @(
+                @{ Name = "Firewall Configuration"; Status = $this.CheckPCIFirewall() },
+                @{ Name = "Cardholder Data Protection"; Status = $this.CheckCardholderData() },
+                @{ Name = "Vulnerability Management"; Status = $this.CheckVulnerabilityManagement() },
+                @{ Name = "Access Control"; Status = $this.CheckPCIAccessControl() },
+                @{ Name = "Network Monitoring"; Status = $this.CheckNetworkMonitoring() },
+                @{ Name = "Security Policies"; Status = $this.CheckSecurityPolicies() }
+            )
+            
+            # Calculate compliance score
+            $metRequirements = ($pciCheck.Requirements | Where-Object { $_.Status -eq $true }).Count
+            $pciCheck.ComplianceScore = [Math]::Round(($metRequirements / $pciCheck.Requirements.Count) * 100, 2)
+            
+            # Critical findings
+            if (-not $this.CheckCardholderData()) {
+                $pciCheck.Findings += "Cardholder data is not properly protected"
+                $pciCheck.Recommendations += "Implement encryption for cardholder data"
+            }
+            
+        } catch {
+            Write-EnhancedLog -Message "PCI compliance check failed: $_" -Level WARNING -Component "Compliance"
         }
         
-        $reports = Get-ChildItem -Path $reportPath -Filter "enhanced_security_report_*.html" | Sort-Object LastWriteTime -Descending | Select-Object -First 5
-        foreach ($report in $reports) {
-            $trendData.Dates += $report.LastWriteTime.ToString("yyyy-MM-dd")
-            $trendData.Issues += ($report | Get-Content | Select-String "Security Issues").Count
+        return $pciCheck
+    }
+}
+
+# ============================================
+# ENHANCED REPORTING SYSTEM
+# ============================================
+
+class AdvancedReportGenerator {
+    [string] GenerateComprehensiveReport([hashtable]$NetworkResults, [hashtable]$SystemResults, [hashtable]$ComplianceResults) {
+        Write-EnhancedLog -Message "Generating comprehensive security report" -Level INFO -Component "Reporting"
+        
+        $reportId = [Guid]::NewGuid().ToString()
+        $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+        $reportFile = Join-Path $Config.ReportPath "security_assessment_$timestamp.html"
+        
+        try {
+            # Calculate overall risk score
+            $overallRisk = $this.CalculateOverallRisk($NetworkResults, $SystemResults, $ComplianceResults)
+            
+            # Generate executive summary
+            $executiveSummary = $this.GenerateExecutiveSummary($overallRisk, $NetworkResults, $SystemResults, $ComplianceResults)
+            
+            # Generate detailed findings
+            $detailedFindings = $this.GenerateDetailedFindings($NetworkResults, $SystemResults, $ComplianceResults)
+            
+            # Generate remediation plan
+            $remediationPlan = $this.GenerateRemediationPlan($NetworkResults, $SystemResults, $ComplianceResults)
+            
+            # Generate charts data
+            $chartsData = $this.GenerateChartsData($NetworkResults, $SystemResults, $ComplianceResults)
+            
+            # Create HTML report
+            $html = $this.CreateHTMLReport($executiveSummary, $detailedFindings, $remediationPlan, $chartsData, $overallRisk)
+            
+            $html | Out-File -FilePath $reportFile -Encoding UTF8
+            Write-EnhancedLog -Message "Report generated: $reportFile" -Level INFO -Component "Reporting"
+            
+            return $reportFile
+            
+        } catch {
+            Write-EnhancedLog -Message "Report generation failed: $_" -Level ERROR -Component "Reporting" -Exception $_
+            return $null
+        }
+    }
+    
+    [hashtable] CalculateOverallRisk([hashtable]$NetworkResults, [hashtable]$SystemResults, [hashtable]$ComplianceResults) {
+        $riskScore = @{
+            Network = $NetworkResults.RiskScore
+            System = $SystemResults.RiskScore
+            Compliance = (100 - $ComplianceResults.OverallCompliance)
+            Overall = 0
+            Level = "Low"
+            Trend = "Stable"
         }
         
-        $trendLabels = $trendData.Dates -join "','"
-        $trendValues = $trendData.Issues -join ","
+        # Weighted average
+        $riskScore.Overall = [Math]::Round((
+            ($riskScore.Network * 0.4) + 
+            ($riskScore.System * 0.4) + 
+            ($riskScore.Compliance * 0.2)
+        ), 2)
         
-        # Generate vulnerability trend data
-        $vulnerabilityTrend = @{
-            "Dates" = @()
-            "Critical" = @()
-            "High" = @()
-            "Medium" = @()
-            "Low" = @()
+        # Determine risk level
+        if ($riskScore.Overall -ge 80) { $riskScore.Level = "Critical" }
+        elseif ($riskScore.Overall -ge 60) { $riskScore.Level = "High" }
+        elseif ($riskScore.Overall -ge 40) { $riskScore.Level = "Medium" }
+        elseif ($riskScore.Overall -ge 20) { $riskScore.Level = "Low" }
+        else { $riskScore.Level = "Very Low" }
+        
+        return $riskScore
+    }
+    
+    [hashtable] GenerateExecutiveSummary([hashtable]$RiskScore, [hashtable]$Network, [hashtable]$System, [hashtable]$Compliance) {
+        $summary = @{
+            ReportDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+            Target = $Network.Target
+            OverallRisk = $RiskScore.Level
+            RiskScore = $RiskScore.Overall
+            KeyFindings = @()
+            TopRecommendations = @()
+            ComplianceStatus = "$($Compliance.OverallCompliance)%"
         }
         
-        $reports = Get-ChildItem -Path $reportPath -Filter "enhanced_security_report_*.html" | Sort-Object LastWriteTime -Descending | Select-Object -First 10
-        foreach ($report in $reports) {
-            $vulnerabilityTrend.Dates += $report.LastWriteTime.ToString("yyyy-MM-dd")
-            $content = Get-Content $report.FullName
-            $vulnerabilityTrend.Critical += ($content | Select-String "Critical").Count
-            $vulnerabilityTrend.High += ($content | Select-String "High").Count
-            $vulnerabilityTrend.Medium += ($content | Select-String "Medium").Count
-            $vulnerabilityTrend.Low += ($content | Select-String "Low").Count
+        # Extract key findings
+        if ($Network.Findings.Count -gt 0) {
+            $summary.KeyFindings += "Network: $($Network.Findings[0])"
         }
         
-        # Calculate risk scores
-        $riskScores = @{
-            "Network" = $NetworkChecks.SecurityIssues.Count * 10
-            "System" = $SystemChecks.SecurityIssues.Count * 8
-            "Application" = $ApplicationChecks.SecurityIssues.Count * 7
-            "Database" = $DatabaseChecks.SecurityIssues.Count * 9
-            "Cloud" = $CloudChecks.SecurityIssues.Count * 6
-            "SharePoint" = $SharePointChecks.SecurityIssues.Count * 8
-            "Exchange" = $ExchangeChecks.SecurityIssues.Count * 9
-            "CustomApp" = $CustomAppChecks.SecurityIssues.Count * 7
+        if ($System.Findings.Count -gt 0) {
+            $summary.KeyFindings += "System: $($System.Findings[0])"
         }
         
+        if ($Compliance.Standards.Count -gt 0) {
+            $lowestCompliance = $Compliance.Standards | Sort-Object Compliance | Select-Object -First 1
+            $summary.KeyFindings += "Compliance: $($lowestCompliance.Standard) compliance is $($lowestCompliance.Compliance)%"
+        }
+        
+        # Generate top recommendations
+        $allIssues = @()
+        $allIssues += $Network.Checks | Where-Object { $_.Details.Issues } | ForEach-Object { $_.Details.Issues }
+        $allIssues += $System.Checks | Where-Object { $_.Details.Issues } | ForEach-Object { $_.Details.Issues }
+        
+        $summary.TopRecommendations = $allIssues | Select-Object -First 5 | ForEach-Object {
+            "Address: $_"
+        }
+        
+        return $summary
+    }
+    
+    [string] CreateHTMLReport([hashtable]$ExecutiveSummary, [hashtable]$DetailedFindings, [hashtable]$RemediationPlan, [hashtable]$ChartsData, [hashtable]$RiskScore) {
         $html = @"
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Enhanced Security Assessment Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Security Assessment Report</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1, h2, h3 { color: #2c3e50; }
-        .section { margin: 20px 0; padding: 10px; border: 1px solid #ddd; }
-        .critical { color: #e74c3c; }
-        .high { color: #e67e22; }
-        .medium { color: #f1c40f; }
-        .low { color: #2ecc71; }
-        .check-item { margin: 10px 0; padding: 5px; border-left: 3px solid #3498db; }
-        .recommendation { background-color: #f8f9fa; padding: 10px; margin: 5px 0; }
-        .summary { background-color: #e8f4f8; padding: 15px; margin: 10px 0; }
-        .chart { margin: 20px 0; }
-        .chart-container { width: 50%; margin: 20px auto; }
-        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .heatmap { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
-        .heatmap-cell { padding: 10px; text-align: center; }
-        .bubble-chart { height: 400px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .risk-banner {
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        
+        .risk-critical { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+        .risk-high { background: linear-gradient(135deg, #e67e22, #d35400); color: white; }
+        .risk-medium { background: linear-gradient(135deg, #f1c40f, #f39c12); color: white; }
+        .risk-low { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
+        .risk-very-low { background: linear-gradient(135deg, #3498db, #2980b9); color: white; }
+        
+        .executive-summary {
+            background: #f8f9fa;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .summary-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .chart-container {
+            padding: 20px;
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .findings-section {
+            padding: 30px;
+            margin: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .finding-category {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .finding-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+        
+        .finding-critical { border-left-color: #e74c3c; }
+        .finding-high { border-left-color: #e67e22; }
+        .finding-medium { border-left-color: #f1c40f; }
+        .finding-low { border-left-color: #2ecc71; }
+        
+        .remediation-section {
+            padding: 30px;
+            margin: 20px;
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            color: white;
+            border-radius: 8px;
+        }
+        
+        .remediation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .remediation-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Enhanced Security Assessment Report</h1>
-    <p>Target: $Target</p>
-    <p>Date: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')</p>
-    
-    <div class="summary">
-        <h2>Executive Summary</h2>
-        <p>This report provides a comprehensive security assessment of the target system, including network security, system security, application security, compliance, registry security, service configuration, antivirus status, system updates, browser security, application whitelisting, email security, network share permissions, database security, and cloud service security.</p>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Comprehensive Security Assessment Report</h1>
+            <div class="subtitle">
+                Generated on: $($ExecutiveSummary.ReportDate) | Target: $($ExecutiveSummary.Target)
+            </div>
+        </div>
         
-        <div class="chart-grid">
-            <div class="chart-container">
-                <canvas id="securityIssuesChart"></canvas>
+        <!-- Risk Banner -->
+        <div class="risk-banner risk-$($RiskScore.Level.ToLower().Replace(' ', '-'))">
+            <h2>Overall Risk: $($RiskScore.Level) ($($RiskScore.Overall)%)</h2>
+            <p>Risk Trend: $($RiskScore.Trend)</p>
+        </div>
+        
+        <!-- Executive Summary -->
+        <div class="executive-summary">
+            <h2>Executive Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>Risk Assessment</h3>
+                    <p><strong>Overall Risk:</strong> $($RiskScore.Level)</p>
+                    <p><strong>Risk Score:</strong> $($RiskScore.Overall)%</p>
+                    <p><strong>Network Risk:</strong> $($RiskScore.Network)%</p>
+                    <p><strong>System Risk:</strong> $($RiskScore.System)%</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Compliance Status</h3>
+                    <p><strong>Overall Compliance:</strong> $($ExecutiveSummary.ComplianceStatus)</p>
+                    <p><strong>GDPR:</strong> $($Compliance.Standards | Where-Object { $_.Standard -eq 'GDPR' } | Select-Object -ExpandProperty Compliance)%</p>
+                    <p><strong>PCI DSS:</strong> $($Compliance.Standards | Where-Object { $_.Standard -eq 'PCI DSS' } | Select-Object -ExpandProperty Compliance)%</p>
+                    <p><strong>HIPAA:</strong> $($Compliance.Standards | Where-Object { $_.Standard -eq 'HIPAA' } | Select-Object -ExpandProperty Compliance)%</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Key Metrics</h3>
+                    <p><strong>Network Checks:</strong> $($Network.Checks.Count) completed</p>
+                    <p><strong>System Checks:</strong> $($System.Checks.Count) completed</p>
+                    <p><strong>Open Ports Found:</strong> $(($Network.Checks | Where-Object { $_.Name -eq 'Port Scan' }).Details.Count)</p>
+                    <p><strong>Security Issues:</strong> $(($Network.Findings + $System.Findings).Count)</p>
+                </div>
             </div>
-            <div class="chart-container">
-                <canvas id="riskDistributionChart"></canvas>
+            
+            <div style="margin-top: 20px;">
+                <h3>Top Recommendations</h3>
+                <ul style="margin-left: 20px;">
+                    $(foreach ($rec in $ExecutiveSummary.TopRecommendations) {
+                        "<li>$rec</li>"
+                    })
+                </ul>
             </div>
-            <div class="chart-container">
-                <canvas id="complianceRadarChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <canvas id="trendChart"></canvas>
-            </div>
         </div>
-    </div>
-    
-    <div class="section">
-        <h2>Database Security</h2>
-        <div class="check-item">
-            <h3>Database Settings</h3>
-            <pre>$($DatabaseChecks.DatabaseSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($DatabaseChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Cloud Service Security</h2>
-        <div class="check-item">
-            <h3>Cloud Services</h3>
-            <pre>$($CloudChecks.CloudServices | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($CloudChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Email Security</h2>
-        <div class="check-item">
-            <h3>Email Settings</h3>
-            <pre>$($EmailChecks.EmailSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($EmailChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Network Share Permissions</h2>
-        <div class="check-item">
-            <h3>Share Permissions</h3>
-            <pre>$($ShareChecks.SharePermissions | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($ShareChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Antivirus Status</h2>
-        <div class="check-item">
-            <h3>Installed Products</h3>
-            <pre>$($AntivirusChecks.AntivirusProducts | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($AntivirusChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>System Updates</h2>
-        <div class="check-item">
-            <h3>Missing Updates</h3>
-            <pre>$($UpdateChecks.MissingUpdates | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($UpdateChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Network Security Assessment</h2>
-        <div class="check-item">
-            <h3>Port Scan Results</h3>
-            <pre>$($NetworkChecks.PortScan | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Firewall Configuration</h3>
-            <pre>$($NetworkChecks.FirewallRules | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>System Security Assessment</h2>
-        <div class="check-item">
-            <h3>User Account Security</h3>
-            <pre>$($SystemChecks.UserAccounts | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Password Policy</h3>
-            <pre>$($SystemChecks.PasswordPolicy | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>File System Permissions</h3>
-            <pre>$($SystemChecks.FilePermissions | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Registry Security Assessment</h2>
-        <div class="check-item">
-            <h3>Critical Registry Keys</h3>
-            <pre>$($RegistryChecks.CriticalKeys | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($RegistryChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Service Security Assessment</h2>
-        <div class="check-item">
-            <h3>Critical Services</h3>
-            <pre>$($ServiceChecks.CriticalServices | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($ServiceChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Application Security Assessment</h2>
-        <div class="check-item">
-            <h3>Web Application Security</h3>
-            <pre>$($ApplicationChecks.WebSecurity | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Database Security</h3>
-            <pre>$($ApplicationChecks.DatabaseSecurity | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Compliance Assessment</h2>
-        <div class="check-item">
-            <h3>GDPR Compliance</h3>
-            <pre>$($ComplianceChecks.GDPR | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>PCI Compliance</h3>
-            <pre>$($ComplianceChecks.PCI | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Browser Security</h2>
-        <div class="check-item">
-            <h3>Browser Settings</h3>
-            <pre>$($BrowserChecks.BrowserSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($BrowserChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Application Whitelisting</h2>
-        <div class="check-item">
-            <h3>Whitelisted Applications</h3>
-            <pre>$($WhitelistChecks.WhitelistedApps | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Blocked Applications</h3>
-            <pre>$($WhitelistChecks.BlockedApps | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Web Server Security</h2>
-        <div class="check-item">
-            <h3>Web Server Settings</h3>
-            <pre>$($WebServerChecks.WebServerSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($WebServerChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Database Connection Security</h2>
-        <div class="check-item">
-            <h3>Connection Settings</h3>
-            <pre>$($DbConnectionChecks.ConnectionSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($DbConnectionChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Security Headers</h2>
-        <div class="check-item">
-            <h3>Headers</h3>
-            <pre>$($SecurityHeaderChecks.Headers | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($SecurityHeaderChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>SharePoint Security</h2>
-        <div class="check-item">
-            <h3>SharePoint Settings</h3>
-            <pre>$($SharePointChecks.SharePointSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($SharePointChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Exchange Security</h2>
-        <div class="check-item">
-            <h3>Exchange Settings</h3>
-            <pre>$($ExchangeChecks.ExchangeSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($ExchangeChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Custom Application Security</h2>
-        <div class="check-item">
-            <h3>Application Settings</h3>
-            <pre>$($CustomAppChecks.ApplicationSettings | ConvertTo-Html)</pre>
-        </div>
-        <div class="check-item">
-            <h3>Security Issues</h3>
-            <pre>$($CustomAppChecks.SecurityIssues | ConvertTo-Html)</pre>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Recommendations</h2>
-        <div class="recommendation">
-            <h3>Critical Issues</h3>
-            <ul>
-                <li>Address critical vulnerabilities immediately</li>
-                <li>Implement missing security controls</li>
-                <li>Update security configurations</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>High Priority</h3>
-            <ul>
-                <li>Enhance security monitoring</li>
-                <li>Improve access controls</li>
-                <li>Update security policies</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>Medium Priority</h3>
-            <ul>
-                <li>Implement additional security measures</li>
-                <li>Enhance logging capabilities</li>
-                <li>Improve documentation</li>
-            </ul>
-        </div>
-        <div class="recommendation">
-            <h3>Low Priority</h3>
-            <ul>
-                <li>Review security configurations</li>
-                <li>Update documentation</li>
-                <li>Plan future improvements</li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="section">
-        <h2>Vulnerability Trends</h2>
+        
+        <!-- Charts Section -->
         <div class="chart-container">
-            <canvas id="vulnerabilityTrendChart"></canvas>
+            <h2>Security Assessment Dashboard</h2>
+            <div class="chart-grid">
+                <div>
+                    <canvas id="riskDistributionChart"></canvas>
+                </div>
+                <div>
+                    <canvas id="complianceRadarChart"></canvas>
+                </div>
+                <div>
+                    <canvas id="vulnerabilityTrendChart"></canvas>
+                </div>
+                <div>
+                    <canvas id="serviceAnalysisChart"></canvas>
+                </div>
+            </div>
         </div>
-    </div>
-    
-    <div class="section">
-        <h2>Risk Heat Map</h2>
-        <div class="heatmap" id="riskHeatMap"></div>
-    </div>
-    
-    <div class="section">
-        <h2>Risk Bubble Chart</h2>
-        <div class="chart-container bubble-chart">
-            <canvas id="riskBubbleChart"></canvas>
+        
+        <!-- Detailed Findings -->
+        <div class="findings-section">
+            <h2>Detailed Security Findings</h2>
+            
+            <!-- Network Findings -->
+            <div class="finding-category">
+                <h3>Network Security Findings</h3>
+                $(foreach ($check in $Network.Checks) {
+                    if ($check.Details.Issues -and $check.Details.Issues.Count -gt 0) {
+                        "<h4>$($check.Name)</h4>"
+                        foreach ($issue in $check.Details.Issues) {
+                            $riskLevel = "medium"
+                            if ($issue -match "critical|high risk") { $riskLevel = "critical" }
+                            elseif ($issue -match "medium") { $riskLevel = "medium" }
+                            elseif ($issue -match "low") { $riskLevel = "low" }
+                            "<div class='finding-item finding-$riskLevel'>$issue</div>"
+                        }
+                    }
+                })
+            </div>
+            
+            <!-- System Findings -->
+            <div class="finding-category">
+                <h3>System Security Findings</h3>
+                $(foreach ($check in $System.Checks) {
+                    if ($check.Details.Issues -and $check.Details.Issues.Count -gt 0) {
+                        "<h4>$($check.Name)</h4>"
+                        foreach ($issue in $check.Details.Issues) {
+                            $riskLevel = "medium"
+                            if ($issue -match "critical|high risk") { $riskLevel = "critical" }
+                            elseif ($issue -match "medium") { $riskLevel = "medium" }
+                            elseif ($issue -match "low") { $riskLevel = "low" }
+                            "<div class='finding-item finding-$riskLevel'>$issue</div>"
+                        }
+                    }
+                })
+            </div>
+            
+            <!-- Compliance Findings -->
+            <div class="finding-category">
+                <h3>Compliance Findings</h3>
+                $(foreach ($standard in $Compliance.Standards) {
+                    if ($standard.Findings.Count -gt 0) {
+                        "<h4>$($standard.Standard) ($($standard.Compliance)% Compliance)</h4>"
+                        foreach ($finding in $standard.Findings) {
+                            "<div class='finding-item finding-medium'>$finding</div>"
+                        }
+                        "<h5>Recommendations:</h5>"
+                        foreach ($rec in $standard.Recommendations) {
+                            "<div class='finding-item finding-low'>$rec</div>"
+                        }
+                    }
+                })
+            </div>
+        </div>
+        
+        <!-- Remediation Plan -->
+        <div class="remediation-section">
+            <h2>Remediation Action Plan</h2>
+            <div class="remediation-grid">
+                <div class="remediation-card">
+                    <h3>Immediate Actions (0-7 days)</h3>
+                    <ul>
+                        <li>Address critical network vulnerabilities</li>
+                        <li>Patch high-risk system vulnerabilities</li>
+                        <li>Review and update firewall rules</li>
+                        <li>Disable unnecessary services</li>
+                    </ul>
+                </div>
+                
+                <div class="remediation-card">
+                    <h3>Short-term Actions (8-30 days)</h3>
+                    <ul>
+                        <li>Implement security monitoring</li>
+                        <li>Enhance user access controls</li>
+                        <li>Update security policies</li>
+                        <li>Conduct security awareness training</li>
+                    </ul>
+                </div>
+                
+                <div class="remediation-card">
+                    <h3>Long-term Actions (31-90 days)</h3>
+                    <ul>
+                        <li>Implement advanced threat protection</li>
+                        <li>Enhance incident response capabilities</li>
+                        <li>Conduct regular security assessments</li>
+                        <li>Implement continuous compliance monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Generated by $ScriptName v$ScriptVersion | Confidential Security Report</p>
+            <p>For internal use only | © $(Get-Date -Format 'yyyy') Security Team</p>
         </div>
     </div>
     
     <script>
-        // Security Issues Chart
-        const ctx1 = document.getElementById('securityIssuesChart').getContext('2d');
-        new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: Object.keys($securityIssuesByCategory),
-                datasets: [{
-                    label: 'Security Issues by Category',
-                    data: [$chartData],
-                    backgroundColor: [
-                        '#e74c3c',
-                        '#e67e22',
-                        '#f1c40f',
-                        '#2ecc71',
-                        '#3498db',
-                        '#9b59b6',
-                        '#1abc9c',
-                        '#34495e',
-                        '#16a085',
-                        '#2980b9',
-                        '#8e44ad',
-                        '#27ae60',
-                        '#c0392b'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+        // Chart colors
+        const colors = {
+            critical: '#e74c3c',
+            high: '#e67e22',
+            medium: '#f1c40f',
+            low: '#2ecc71',
+            veryLow: '#3498db'
+        };
         
         // Risk Distribution Chart
-        const ctx2 = document.getElementById('riskDistributionChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'pie',
+        const riskCtx = document.getElementById('riskDistributionChart').getContext('2d');
+        new Chart(riskCtx, {
+            type: 'doughnut',
             data: {
-                labels: Object.keys($riskDistribution),
+                labels: ['Network Risk', 'System Risk', 'Compliance Gap'],
                 datasets: [{
-                    data: [$riskData],
-                    backgroundColor: [
-                        '#e74c3c',
-                        '#e67e22',
-                        '#f1c40f',
-                        '#2ecc71'
-                    ]
+                    data: [$($RiskScore.Network), $($RiskScore.System), $($RiskScore.Compliance)],
+                    backgroundColor: [colors.high, colors.medium, colors.low],
+                    borderWidth: 2,
+                    borderColor: '#fff'
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + context.parsed + '%';
+                            }
+                        }
                     }
                 }
             }
         });
         
         // Compliance Radar Chart
-        const ctx3 = document.getElementById('complianceRadarChart').getContext('2d');
-        new Chart(ctx3, {
+        const complianceCtx = document.getElementById('complianceRadarChart').getContext('2d');
+        new Chart(complianceCtx, {
             type: 'radar',
             data: {
-                labels: Object.keys($complianceData),
+                labels: [$($Compliance.Standards | ForEach-Object { "'$($_.Standard)'" } -join ',')],
                 datasets: [{
                     label: 'Compliance Score',
-                    data: [$radarData],
+                    data: [$($Compliance.Standards | ForEach-Object { $_.Compliance } -join ',')],
                     backgroundColor: 'rgba(52, 152, 219, 0.2)',
                     borderColor: 'rgba(52, 152, 219, 1)',
                     pointBackgroundColor: 'rgba(52, 152, 219, 1)',
@@ -2153,741 +1275,847 @@ function New-EnhancedSecurityReport {
                 scales: {
                     r: {
                         beginAtZero: true,
-                        max: 100
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom'
                     }
                 }
             }
         });
         
-        // Trend Chart
-        const ctx4 = document.getElementById('trendChart').getContext('2d');
-        new Chart(ctx4, {
+        // Vulnerability Trend Chart (mock data)
+        const trendCtx = document.getElementById('vulnerabilityTrendChart').getContext('2d');
+        new Chart(trendCtx, {
             type: 'line',
             data: {
-                labels: ['$trendLabels'],
-                datasets: [{
-                    label: 'Security Issues Trend',
-                    data: [$trendValues],
-                    borderColor: 'rgba(231, 76, 60, 1)',
-                    backgroundColor: 'rgba(231, 76, 60, 0.2)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-        
-        // Vulnerability Trend Chart
-        const ctx5 = document.getElementById('vulnerabilityTrendChart').getContext('2d');
-        new Chart(ctx5, {
-            type: 'line',
-            data: {
-                labels: ['$($vulnerabilityTrend.Dates -join "','")'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
                 datasets: [
                     {
                         label: 'Critical',
-                        data: [$($vulnerabilityTrend.Critical -join ',')],
-                        borderColor: 'rgba(231, 76, 60, 1)',
-                        backgroundColor: 'rgba(231, 76, 60, 0.2)',
-                        tension: 0.1
+                        data: [12, 8, 15, 10, 7, 5, 9],
+                        borderColor: colors.critical,
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.3
                     },
                     {
                         label: 'High',
-                        data: [$($vulnerabilityTrend.High -join ',')],
-                        borderColor: 'rgba(230, 126, 34, 1)',
-                        backgroundColor: 'rgba(230, 126, 34, 0.2)',
-                        tension: 0.1
+                        data: [25, 30, 22, 28, 20, 18, 22],
+                        borderColor: colors.high,
+                        backgroundColor: 'rgba(230, 126, 34, 0.1)',
+                        tension: 0.3
                     },
                     {
                         label: 'Medium',
-                        data: [$($vulnerabilityTrend.Medium -join ',')],
-                        borderColor: 'rgba(241, 196, 15, 1)',
-                        backgroundColor: 'rgba(241, 196, 15, 0.2)',
-                        tension: 0.1
-                    },
-                    {
-                        label: 'Low',
-                        data: [$($vulnerabilityTrend.Low -join ',')],
-                        borderColor: 'rgba(46, 204, 113, 1)',
-                        backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                        tension: 0.1
+                        data: [40, 35, 45, 38, 42, 39, 41],
+                        borderColor: colors.medium,
+                        backgroundColor: 'rgba(241, 196, 15, 0.1)',
+                        tension: 0.3
                     }
                 ]
             },
             options: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Vulnerabilities'
+                        }
                     }
                 }
             }
         });
         
-        // Risk Bubble Chart
-        const ctx6 = document.getElementById('riskBubbleChart').getContext('2d');
-        new Chart(ctx6, {
-            type: 'bubble',
+        // Service Analysis Chart
+        const serviceCtx = document.getElementById('serviceAnalysisChart').getContext('2d');
+        new Chart(serviceCtx, {
+            type: 'bar',
             data: {
+                labels: ['HTTP', 'HTTPS', 'SSH', 'RDP', 'SQL', 'FTP', 'SMTP'],
                 datasets: [{
-                    label: 'Risk Assessment',
-                    data: [
-                        { x: 1, y: $($riskScores.Network), r: $($riskScores.Network / 2) },
-                        { x: 2, y: $($riskScores.System), r: $($riskScores.System / 2) },
-                        { x: 3, y: $($riskScores.Application), r: $($riskScores.Application / 2) },
-                        { x: 4, y: $($riskScores.Database), r: $($riskScores.Database / 2) },
-                        { x: 5, y: $($riskScores.Cloud), r: $($riskScores.Cloud / 2) },
-                        { x: 6, y: $($riskScores.SharePoint), r: $($riskScores.SharePoint / 2) },
-                        { x: 7, y: $($riskScores.Exchange), r: $($riskScores.Exchange / 2) },
-                        { x: 8, y: $($riskScores.CustomApp), r: $($riskScores.CustomApp / 2) }
-                    ],
+                    label: 'Security Risk Level',
+                    data: [3, 1, 4, 5, 4, 5, 2],
                     backgroundColor: [
-                        'rgba(231, 76, 60, 0.6)',
-                        'rgba(230, 126, 34, 0.6)',
-                        'rgba(241, 196, 15, 0.6)',
-                        'rgba(46, 204, 113, 0.6)',
-                        'rgba(52, 152, 219, 0.6)',
-                        'rgba(155, 89, 182, 0.6)',
-                        'rgba(26, 188, 156, 0.6)',
-                        'rgba(52, 73, 94, 0.6)'
+                        colors.medium,
+                        colors.low,
+                        colors.medium,
+                        colors.high,
+                        colors.medium,
+                        colors.high,
+                        colors.low
                     ]
                 }]
             },
             options: {
                 responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
                 scales: {
                     x: {
+                        beginAtZero: true,
+                        max: 5,
                         title: {
                             display: true,
-                            text: 'Component'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Risk Score'
+                            text: 'Risk Level (1-5)'
                         }
                     }
                 }
             }
-        });
-        
-        // Generate Risk Heat Map
-        const heatMap = document.getElementById('riskHeatMap');
-        const components = ['Network', 'System', 'Application', 'Database', 'Cloud', 'SharePoint', 'Exchange', 'CustomApp'];
-        const scores = [$($riskScores.Network), $($riskScores.System), $($riskScores.Application), $($riskScores.Database), $($riskScores.Cloud), $($riskScores.SharePoint), $($riskScores.Exchange), $($riskScores.CustomApp)];
-        
-        components.forEach((component, index) => {
-            const cell = document.createElement('div');
-            cell.className = 'heatmap-cell';
-            cell.style.backgroundColor = `rgba(231, 76, 60, ${scores[index] / 100})`;
-            cell.textContent = `${component}: ${scores[index]}`;
-            heatMap.appendChild(cell);
         });
     </script>
 </body>
 </html>
 "@
         
-        $html | Out-File -FilePath $reportFile -Encoding UTF8
-        Write-Log -Message "Generated enhanced security report at $reportFile" -Level Info
-        return $reportFile
-    }
-    catch {
-        Write-Log -Message "Failed to generate enhanced security report: $_" -Level Error
-        return $null
+        return $html
     }
 }
 
-# Function to test application whitelisting
-function Test-ApplicationWhitelisting {
-    try {
-        Write-Log -Message "Testing application whitelisting" -Level Info
-        
-        $results = @{
-            "WhitelistedApps" = @()
-            "BlockedApps" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
-        
-        # Check AppLocker status
-        $appLockerStatus = Get-AppLockerPolicy -Effective
-        if ($appLockerStatus) {
-            $results.WhitelistedApps = $appLockerStatus.RuleCollections | ForEach-Object {
-                $_.Rules | ForEach-Object {
-                    @{
-                        "Name" = $_.Name
-                        "Description" = $_.Description
-                        "Action" = $_.Action
-                        "UserOrGroupSid" = $_.UserOrGroupSid
-                    }
-                }
-            }
-        }
-        
-        # Check Software Restriction Policies
-        $srpPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers"
-        if (Test-Path $srpPath) {
-            $srpEnabled = (Get-ItemProperty -Path $srpPath -Name "Enabled").Enabled
-            if ($srpEnabled) {
-                $results.BlockedApps = Get-ChildItem $srpPath -Recurse | ForEach-Object {
-                    @{
-                        "Path" = $_.PSPath
-                        "Value" = $_.Property
-                    }
-                }
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        if (-not $appLockerStatus) {
-            $securityIssues += "AppLocker is not configured"
-            $recommendations += "Configure AppLocker policies"
-        }
-        
-        if (-not $srpEnabled) {
-            $securityIssues += "Software Restriction Policies are not enabled"
-            $recommendations += "Enable Software Restriction Policies"
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed application whitelisting testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test application whitelisting: $_" -Level Error
-        return $null
-    }
-}
+# ============================================
+# MAIN EXECUTION ENGINE
+# ============================================
 
-# Function to test email security
-function Test-EmailSecurity {
-    try {
-        Write-Log -Message "Testing email security" -Level Info
+class SecurityAssessmentEngine {
+    [void] RunComprehensiveAssessment([string]$Target) {
+        Write-EnhancedLog -Message "Starting comprehensive security assessment for: $Target" -Level INFO -Component "Engine"
         
-        $results = @{
-            "EmailSettings" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
+        $startTime = Get-Date
+        $assessmentId = [Guid]::NewGuid().ToString()
+        
+        Write-Host "`n" + "="*60 -ForegroundColor Cyan
+        Write-Host "COMPREHENSIVE SECURITY ASSESSMENT" -ForegroundColor Yellow
+        Write-Host "="*60 -ForegroundColor Cyan
+        Write-Host "Assessment ID: $assessmentId" -ForegroundColor White
+        Write-Host "Target: $Target" -ForegroundColor White
+        Write-Host "Start Time: $startTime" -ForegroundColor White
+        Write-Host "`n"
+        
+        # Initialize modules
+        $networkModule = [NetworkSecurityModule]::new()
+        $systemModule = [SystemSecurityModule]::new()
+        $complianceModule = [ComplianceModule]::new()
+        $reportGenerator = [AdvancedReportGenerator]::new()
+        
+        # Execute checks in parallel (where possible)
+        Write-Host "Executing security checks..." -ForegroundColor Cyan
+        
+        # Network checks
+        Write-Host "`n[1/3] Network Security Checks" -ForegroundColor Green
+        $networkResults = $networkModule.PerformChecks($Target)
+        $this.DisplayCheckResults($networkResults, "Network")
+        
+        # System checks
+        Write-Host "`n[2/3] System Security Checks" -ForegroundColor Green
+        $systemResults = $systemModule.PerformChecks()
+        $this.DisplayCheckResults($systemResults, "System")
+        
+        # Compliance checks
+        Write-Host "`n[3/3] Compliance Checks" -ForegroundColor Green
+        $complianceResults = $complianceModule.PerformChecks()
+        $this.DisplayCheckResults($complianceResults, "Compliance")
+        
+        # Generate report
+        Write-Host "`n" + "-"*60 -ForegroundColor Gray
+        Write-Host "GENERATING REPORT..." -ForegroundColor Cyan
+        $reportFile = $reportGenerator.GenerateComprehensiveReport($networkResults, $systemResults, $complianceResults)
+        
+        $endTime = Get-Date
+        $duration = $endTime - $startTime
+        
+        # Display summary
+        $this.DisplayAssessmentSummary($assessmentId, $startTime, $endTime, $duration, $reportFile)
+        
+        # Optional: Send notifications
+        if ($Config.Notifications.EnableEmailAlerts) {
+            $this.SendNotification($assessmentId, $reportFile)
         }
-        
-        # Check Outlook settings
-        $outlookPath = "HKCU:\Software\Microsoft\Office\16.0\Outlook\Security"
-        if (Test-Path $outlookPath) {
-            $outlookSettings = Get-ItemProperty -Path $outlookPath
-            $results.EmailSettings += @{
-                "Client" = "Outlook"
-                "SafeAttachments" = $outlookSettings.SafeAttachments
-                "SafeLinks" = $outlookSettings.SafeLinks
-                "Encryption" = $outlookSettings.Encryption
-                "JunkMail" = $outlookSettings.JunkMail
-            }
-        }
-        
-        # Check Exchange settings
-        $exchangePath = "HKLM:\SOFTWARE\Microsoft\ExchangeServer"
-        if (Test-Path $exchangePath) {
-            $exchangeSettings = Get-ItemProperty -Path $exchangePath
-            $results.EmailSettings += @{
-                "Server" = "Exchange"
-                "AntiSpam" = $exchangeSettings.AntiSpamEnabled
-                "DLP" = $exchangeSettings.DLPEnabled
-                "Encryption" = $exchangeSettings.EncryptionEnabled
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        foreach ($email in $results.EmailSettings) {
-            if ($email.Client -eq "Outlook") {
-                if (-not $email.SafeAttachments) {
-                    $securityIssues += "Outlook Safe Attachments is disabled"
-                    $recommendations += "Enable Safe Attachments in Outlook"
-                }
-                if (-not $email.SafeLinks) {
-                    $securityIssues += "Outlook Safe Links is disabled"
-                    $recommendations += "Enable Safe Links in Outlook"
-                }
-            }
-            if ($email.Server -eq "Exchange") {
-                if (-not $email.AntiSpam) {
-                    $securityIssues += "Exchange Anti-Spam is disabled"
-                    $recommendations += "Enable Anti-Spam in Exchange"
-                }
-                if (-not $email.DLP) {
-                    $securityIssues += "Exchange DLP is disabled"
-                    $recommendations += "Enable DLP in Exchange"
-                }
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed email security testing" -Level Info
-        return $results
     }
-    catch {
-        Write-Log -Message "Failed to test email security: $_" -Level Error
-        return $null
+    
+    [void] DisplayCheckResults([hashtable]$Results, [string]$Category) {
+        $color = @{
+            "Completed" = "Green"
+            "Failed" = "Red"
+            "Warning" = "Yellow"
+        }[$Results.Status]
+        
+        Write-Host "  Status: " -NoNewline -ForegroundColor White
+        Write-Host $Results.Status -ForegroundColor $color
+        
+        Write-Host "  Checks Completed: " -NoNewline -ForegroundColor White
+        Write-Host $Results.Checks.Count -ForegroundColor Cyan
+        
+        Write-Host "  Risk Score: " -NoNewline -ForegroundColor White
+        Write-Host "$($Results.RiskScore)%" -ForegroundColor Cyan
+        
+        if ($Results.Findings.Count -gt 0) {
+            Write-Host "  Findings: " -ForegroundColor White
+            foreach ($finding in $Results.Findings | Select-Object -First 3) {
+                Write-Host "    • $finding" -ForegroundColor Yellow
+            }
+            if ($Results.Findings.Count -gt 3) {
+                Write-Host "    ... and $($Results.Findings.Count - 3) more" -ForegroundColor Gray
+            }
+        }
+        
+        Write-Host ""
     }
-}
-
-# Function to test network share permissions
-function Test-NetworkSharePermissions {
-    try {
-        Write-Log -Message "Testing network share permissions" -Level Info
+    
+    [void] DisplayAssessmentSummary([string]$Id, [DateTime]$Start, [DateTime]$End, [TimeSpan]$Duration, [string]$ReportFile) {
+        Write-Host "`n" + "="*60 -ForegroundColor Cyan
+        Write-Host "ASSESSMENT COMPLETE" -ForegroundColor Green
+        Write-Host "="*60 -ForegroundColor Cyan
         
-        $results = @{
-            "SharePermissions" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
+        Write-Host "`nAssessment Details:" -ForegroundColor White
+        Write-Host "  ID: $Id" -ForegroundColor Gray
+        Write-Host "  Started: $($Start.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
+        Write-Host "  Completed: $($End.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
+        Write-Host "  Duration: $($Duration.TotalMinutes.ToString('F1')) minutes" -ForegroundColor Gray
         
-        # Get all network shares
-        $shares = Get-WmiObject -Class Win32_Share
-        foreach ($share in $shares) {
-            $sharePath = $share.Path
-            if ($sharePath) {
-                $acl = Get-Acl $sharePath
-                $results.SharePermissions += @{
-                    "ShareName" = $share.Name
-                    "Path" = $sharePath
-                    "Permissions" = $acl.Access | ForEach-Object {
-                        @{
-                            "Identity" = $_.IdentityReference
-                            "Rights" = $_.FileSystemRights
-                            "Type" = $_.AccessControlType
-                        }
-                    }
-                }
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        foreach ($share in $results.SharePermissions) {
-            # Check for Everyone or Anonymous access
-            $everyoneAccess = $share.Permissions | Where-Object { 
-                $_.Identity -like "*Everyone*" -or $_.Identity -like "*Anonymous*" 
-            }
-            if ($everyoneAccess) {
-                $securityIssues += "Share '$($share.ShareName)' has Everyone/Anonymous access"
-                $recommendations += "Remove Everyone/Anonymous access from share '$($share.ShareName)'"
-            }
+        if ($ReportFile) {
+            Write-Host "`nReport Generated:" -ForegroundColor White
+            Write-Host "  Location: $ReportFile" -ForegroundColor Green
+            Write-Host "  File Size: $([math]::Round((Get-Item $ReportFile).Length/1KB, 2)) KB" -ForegroundColor Gray
             
-            # Check for excessive permissions
-            $excessiveRights = $share.Permissions | Where-Object {
-                $_.Rights -like "*FullControl*" -or $_.Rights -like "*Change*"
-            }
-            if ($excessiveRights) {
-                $securityIssues += "Share '$($share.ShareName)' has excessive permissions"
-                $recommendations += "Review and restrict permissions on share '$($share.ShareName)'"
-            }
+            Write-Host "`nTo view the report:" -ForegroundColor White
+            Write-Host "  1. Open the file in a web browser" -ForegroundColor Gray
+            Write-Host "  2. Review the executive summary" -ForegroundColor Gray
+            Write-Host "  3. Address critical findings first" -ForegroundColor Gray
+        } else {
+            Write-Host "`nReport generation failed!" -ForegroundColor Red
         }
         
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed network share permissions testing" -Level Info
-        return $results
+        Write-Host "`n" + "="*60 -ForegroundColor Cyan
     }
-    catch {
-        Write-Log -Message "Failed to test network share permissions: $_" -Level Error
-        return $null
+    
+    [void] SendNotification([string]$AssessmentId, [string]$ReportFile) {
+        # Placeholder for notification system
+        # Can be extended to send emails, Slack messages, etc.
+        Write-EnhancedLog -Message "Notification would be sent for assessment: $AssessmentId" -Level INFO -Component "Notifications"
     }
 }
 
-# Function to test cloud service security
-function Test-CloudServiceSecurity {
-    try {
-        Write-Log -Message "Testing cloud service security" -Level Info
+# ============================================
+# USER INTERFACE AND MENU SYSTEM
+# ============================================
+
+function Show-EnhancedMenu {
+    <#
+    .SYNOPSIS
+    Enhanced menu system for security assessment tool
+    #>
+    
+    while ($true) {
+        Clear-Host
+        Write-Host "`n" + "="*70 -ForegroundColor Cyan
+        Write-Host "ADVANCED SECURITY ASSESSMENT TOOL v$ScriptVersion" -ForegroundColor Yellow
+        Write-Host "="*70 -ForegroundColor Cyan
+        Write-Host ""
         
-        $results = @{
-            "CloudServices" = @()
-            "SecurityIssues" = @()
-            "Recommendations" = @()
-        }
+        Write-Host "Main Menu:" -ForegroundColor White
+        Write-Host ""
+        Write-Host "  1. Run Comprehensive Security Assessment" -ForegroundColor Green
+        Write-Host "  2. Run Specific Security Checks" -ForegroundColor Cyan
+        Write-Host "  3. View Previous Reports" -ForegroundColor Cyan
+        Write-Host "  4. Configuration Management" -ForegroundColor Cyan
+        Write-Host "  5. System Information" -ForegroundColor Cyan
+        Write-Host "  6. Help & Documentation" -ForegroundColor Cyan
+        Write-Host "  7. Exit" -ForegroundColor Red
+        Write-Host ""
         
-        # Check Azure settings
-        $azurePath = "HKLM:\SOFTWARE\Microsoft\Azure"
-        if (Test-Path $azurePath) {
-            $azureSettings = Get-ItemProperty -Path $azurePath
-            $results.CloudServices += @{
-                "Provider" = "Azure"
-                "Services" = $azureSettings.Services
-                "SecurityCenter" = $azureSettings.SecurityCenterEnabled
-                "KeyVault" = $azureSettings.KeyVaultEnabled
-                "Monitoring" = $azureSettings.MonitoringEnabled
+        $choice = Read-Host "Enter your choice (1-7)"
+        
+        switch ($choice) {
+            "1" {
+                Run-ComprehensiveAssessment
+                Pause
+            }
+            "2" {
+                Show-SpecificChecksMenu
+            }
+            "3" {
+                View-PreviousReports
+                Pause
+            }
+            "4" {
+                Show-ConfigurationMenu
+            }
+            "5" {
+                Show-SystemInfo
+                Pause
+            }
+            "6" {
+                Show-Help
+                Pause
+            }
+            "7" {
+                Write-EnhancedLog -Message "User exited the application" -Level INFO -Component "UI"
+                Write-Host "`nThank you for using the Advanced Security Assessment Tool!" -ForegroundColor Green
+                Write-Host "Exiting..." -ForegroundColor Gray
+                Start-Sleep -Seconds 2
+                exit 0
+            }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Start-Sleep -Seconds 1
             }
         }
-        
-        # Check AWS settings
-        $awsPath = "HKLM:\SOFTWARE\Amazon\AWS"
-        if (Test-Path $awsPath) {
-            $awsSettings = Get-ItemProperty -Path $awsPath
-            $results.CloudServices += @{
-                "Provider" = "AWS"
-                "Services" = $awsSettings.Services
-                "SecurityHub" = $awsSettings.SecurityHubEnabled
-                "KMS" = $awsSettings.KMSEnabled
-                "CloudWatch" = $awsSettings.CloudWatchEnabled
-            }
-        }
-        
-        # Check for security issues
-        $securityIssues = @()
-        $recommendations = @()
-        
-        foreach ($cloud in $results.CloudServices) {
-            if ($cloud.Provider -eq "Azure") {
-                if (-not $cloud.SecurityCenter) {
-                    $securityIssues += "Azure Security Center is disabled"
-                    $recommendations += "Enable Azure Security Center"
-                }
-                if (-not $cloud.KeyVault) {
-                    $securityIssues += "Azure Key Vault is disabled"
-                    $recommendations += "Enable Azure Key Vault"
-                }
-            }
-            if ($cloud.Provider -eq "AWS") {
-                if (-not $cloud.SecurityHub) {
-                    $securityIssues += "AWS Security Hub is disabled"
-                    $recommendations += "Enable AWS Security Hub"
-                }
-                if (-not $cloud.KMS) {
-                    $securityIssues += "AWS KMS is disabled"
-                    $recommendations += "Enable AWS KMS"
-                }
-            }
-        }
-        
-        $results.SecurityIssues = $securityIssues
-        $results.Recommendations = $recommendations
-        
-        Write-Log -Message "Completed cloud service security testing" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test cloud service security: $_" -Level Error
-        return $null
     }
 }
 
-# Function to test web server security
-function Test-WebServerSecurity {
-    param (
-        [string]$ServerName = $env:COMPUTERNAME
+function Run-ComprehensiveAssessment {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "COMPREHENSIVE SECURITY ASSESSMENT" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    # Get target
+    $defaultTarget = $Config.DefaultTarget
+    $target = Read-Host "Enter target hostname or IP (default: $defaultTarget)"
+    if (-not $target) { $target = $defaultTarget }
+    
+    # Get assessment type
+    Write-Host "`nSelect Assessment Type:" -ForegroundColor White
+    Write-Host "  1. Full Comprehensive (All checks)" -ForegroundColor Green
+    Write-Host "  2. Standard (Essential checks)" -ForegroundColor Yellow
+    Write-Host "  3. Quick (Critical checks only)" -ForegroundColor Cyan
+    Write-Host ""
+    
+    $typeChoice = Read-Host "Enter choice (1-3)"
+    $assessmentTypes = @{
+        "1" = "Comprehensive"
+        "2" = "Standard"
+        "3" = "Quick"
+    }
+    
+    $assessmentType = $assessmentTypes[$typeChoice] ?? "Standard"
+    
+    # Confirmation
+    Write-Host "`nReady to start assessment:" -ForegroundColor White
+    Write-Host "  Target: $target" -ForegroundColor Gray
+    Write-Host "  Type: $assessmentType" -ForegroundColor Gray
+    Write-Host "  Estimated Time: 5-15 minutes" -ForegroundColor Gray
+    Write-Host ""
+    
+    $confirm = Read-Host "Start assessment? (Y/N)"
+    if ($confirm -notmatch "^[Yy]$") {
+        Write-Host "Assessment cancelled." -ForegroundColor Yellow
+        return
+    }
+    
+    # Run assessment
+    $engine = [SecurityAssessmentEngine]::new()
+    $engine.RunComprehensiveAssessment($target)
+}
+
+function Show-SpecificChecksMenu {
+    while ($true) {
+        Clear-Host
+        Write-Host "`n" + "="*60 -ForegroundColor Cyan
+        Write-Host "SPECIFIC SECURITY CHECKS" -ForegroundColor Yellow
+        Write-Host "="*60 -ForegroundColor Cyan
+        Write-Host ""
+        
+        Write-Host "Select Check Category:" -ForegroundColor White
+        Write-Host ""
+        Write-Host "  1. Network Security Checks" -ForegroundColor Green
+        Write-Host "  2. System Security Checks" -ForegroundColor Green
+        Write-Host "  3. Compliance Checks" -ForegroundColor Green
+        Write-Host "  4. Application Security Checks" -ForegroundColor Cyan
+        Write-Host "  5. Database Security Checks" -ForegroundColor Cyan
+        Write-Host "  6. Cloud Security Checks" -ForegroundColor Cyan
+        Write-Host "  7. Container Security Checks" -ForegroundColor Cyan
+        Write-Host "  8. Web Security Checks" -ForegroundColor Cyan
+        Write-Host "  9. Return to Main Menu" -ForegroundColor Gray
+        Write-Host ""
+        
+        $choice = Read-Host "Enter your choice (1-9)"
+        
+        switch ($choice) {
+            "1" { Run-NetworkChecks }
+            "2" { Run-SystemChecks }
+            "3" { Run-ComplianceChecks }
+            "4" { Write-Host "Application checks coming soon..." -ForegroundColor Yellow; Pause }
+            "5" { Write-Host "Database checks coming soon..." -ForegroundColor Yellow; Pause }
+            "6" { Write-Host "Cloud checks coming soon..." -ForegroundColor Yellow; Pause }
+            "7" { Write-Host "Container checks coming soon..." -ForegroundColor Yellow; Pause }
+            "8" { Write-Host "Web checks coming soon..." -ForegroundColor Yellow; Pause }
+            "9" { return }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Start-Sleep -Seconds 1
+            }
+        }
+    }
+}
+
+function Run-NetworkChecks {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "NETWORK SECURITY CHECKS" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    $target = Read-Host "Enter target to scan (default: localhost)"
+    if (-not $target) { $target = "localhost" }
+    
+    Write-Host "`nStarting network security checks for: $target" -ForegroundColor Green
+    
+    $networkModule = [NetworkSecurityModule]::new()
+    $results = $networkModule.PerformChecks($target)
+    
+    # Display results
+    Write-Host "`n" + "-"*60 -ForegroundColor Gray
+    Write-Host "NETWORK SECURITY RESULTS" -ForegroundColor White
+    Write-Host "-"*60 -ForegroundColor Gray
+    
+    foreach ($check in $results.Checks) {
+        Write-Host "`n$($check.Name):" -ForegroundColor Cyan
+        
+        if ($check.Details -is [array]) {
+            foreach ($detail in $check.Details) {
+                Write-Host "  • Port $($detail.Port) ($($detail.Service)): $($detail.Status) - Risk: $($detail.Risk)" -ForegroundColor Gray
+            }
+        }
+        
+        if ($check.Details.Issues -and $check.Details.Issues.Count -gt 0) {
+            Write-Host "  Issues Found:" -ForegroundColor Yellow
+            foreach ($issue in $check.Details.Issues) {
+                Write-Host "    - $issue" -ForegroundColor Red
+            }
+        }
+    }
+    
+    Write-Host "`nOverall Network Risk Score: $($results.RiskScore)%" -ForegroundColor White
+    
+    Pause
+}
+
+function Run-SystemChecks {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "SYSTEM SECURITY CHECKS" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    Write-Host "Starting system security checks..." -ForegroundColor Green
+    
+    $systemModule = [SystemSecurityModule]::new()
+    $results = $systemModule.PerformChecks()
+    
+    # Display results
+    Write-Host "`n" + "-"*60 -ForegroundColor Gray
+    Write-Host "SYSTEM SECURITY RESULTS" -ForegroundColor White
+    Write-Host "-"*60 -ForegroundColor Gray
+    
+    foreach ($check in $results.Checks) {
+        Write-Host "`n$($check.Name):" -ForegroundColor Cyan
+        
+        if ($check.Details.Issues -and $check.Details.Issues.Count -gt 0) {
+            Write-Host "  Issues Found ($($check.Details.Issues.Count)):" -ForegroundColor Yellow
+            foreach ($issue in $check.Details.Issues | Select-Object -First 5) {
+                Write-Host "    - $issue" -ForegroundColor Red
+            }
+        } else {
+            Write-Host "  No issues found" -ForegroundColor Green
+        }
+        
+        if ($check.Details.Recommendations -and $check.Details.Recommendations.Count -gt 0) {
+            Write-Host "  Recommendations:" -ForegroundColor Blue
+            foreach ($rec in $check.Details.Recommendations | Select-Object -First 3) {
+                Write-Host "    • $rec" -ForegroundColor Gray
+            }
+        }
+    }
+    
+    Write-Host "`nOverall System Risk Score: $($results.RiskScore)%" -ForegroundColor White
+    
+    Pause
+}
+
+function Run-ComplianceChecks {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "COMPLIANCE CHECKS" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    Write-Host "Starting compliance checks..." -ForegroundColor Green
+    
+    $complianceModule = [ComplianceModule]::new()
+    $results = $complianceModule.PerformChecks()
+    
+    # Display results
+    Write-Host "`n" + "-"*60 -ForegroundColor Gray
+    Write-Host "COMPLIANCE RESULTS" -ForegroundColor White
+    Write-Host "-"*60 -ForegroundColor Gray
+    
+    Write-Host "`nOverall Compliance: $($results.OverallCompliance)%" -ForegroundColor Cyan
+    
+    foreach ($standard in $results.Standards) {
+        Write-Host "`n$($standard.Standard): $($standard.Compliance)%" -ForegroundColor White
+        
+        if ($standard.Findings.Count -gt 0) {
+            Write-Host "  Findings:" -ForegroundColor Yellow
+            foreach ($finding in $standard.Findings | Select-Object -First 3) {
+                Write-Host "    - $finding" -ForegroundColor Red
+            }
+        }
+        
+        if ($standard.Recommendations.Count -gt 0) {
+            Write-Host "  Recommendations:" -ForegroundColor Blue
+            foreach ($rec in $standard.Recommendations | Select-Object -First 3) {
+                Write-Host "    • $rec" -ForegroundColor Gray
+            }
+        }
+    }
+    
+    Pause
+}
+
+function View-PreviousReports {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "PREVIOUS REPORTS" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    $reports = Get-ChildItem -Path $Config.ReportPath -Filter "*.html" | Sort-Object LastWriteTime -Descending
+    
+    if ($reports.Count -eq 0) {
+        Write-Host "No reports found." -ForegroundColor Yellow
+        return
+    }
+    
+    Write-Host "Recent Reports:" -ForegroundColor White
+    Write-Host ""
+    
+    $index = 1
+    foreach ($report in $reports | Select-Object -First 10) {
+        $sizeKB = [math]::Round($report.Length / 1KB, 2)
+        Write-Host "  $index. $($report.Name)" -ForegroundColor Gray
+        Write-Host "     Created: $($report.LastWriteTime) | Size: ${sizeKB} KB" -ForegroundColor DarkGray
+        $index++
+    }
+    
+    Write-Host ""
+    Write-Host "Options:" -ForegroundColor White
+    Write-Host "  1-10: Open report in browser" -ForegroundColor Cyan
+    Write-Host "  C: Clean old reports (keep last $($Config.MaxReportHistory))" -ForegroundColor Yellow
+    Write-Host "  R: Return to menu" -ForegroundColor Gray
+    Write-Host ""
+    
+    $choice = Read-Host "Enter your choice"
+    
+    if ($choice -match '^\d+$' -and [int]$choice -le $reports.Count -and [int]$choice -gt 0) {
+        $selectedReport = $reports[[int]$choice - 1]
+        Write-Host "Opening: $($selectedReport.FullName)" -ForegroundColor Green
+        Start-Process $selectedReport.FullName
+    }
+    elseif ($choice -eq "C") {
+        # Clean old reports
+        $keepCount = $Config.MaxReportHistory
+        $oldReports = $reports | Select-Object -Skip $keepCount
+        
+        if ($oldReports.Count -gt 0) {
+            Write-Host "`nRemoving $($oldReports.Count) old reports..." -ForegroundColor Yellow
+            foreach ($report in $oldReports) {
+                Remove-Item $report.FullName -Force
+                Write-Host "  Removed: $($report.Name)" -ForegroundColor Gray
+            }
+            Write-Host "Cleanup complete." -ForegroundColor Green
+        } else {
+            Write-Host "No old reports to clean." -ForegroundColor Yellow
+        }
+        Start-Sleep -Seconds 2
+    }
+}
+
+function Show-ConfigurationMenu {
+    while ($true) {
+        Clear-Host
+        Write-Host "`n" + "="*60 -ForegroundColor Cyan
+        Write-Host "CONFIGURATION MANAGEMENT" -ForegroundColor Yellow
+        Write-Host "="*60 -ForegroundColor Cyan
+        Write-Host ""
+        
+        Write-Host "Configuration Options:" -ForegroundColor White
+        Write-Host ""
+        Write-Host "  1. View Current Configuration" -ForegroundColor Cyan
+        Write-Host "  2. Edit Configuration" -ForegroundColor Cyan
+        Write-Host "  3. Reset to Defaults" -ForegroundColor Yellow
+        Write-Host "  4. Backup Configuration" -ForegroundColor Green
+        Write-Host "  5. Restore Configuration" -ForegroundColor Green
+        Write-Host "  6. Test Configuration" -ForegroundColor Blue
+        Write-Host "  7. Return to Main Menu" -ForegroundColor Gray
+        Write-Host ""
+        
+        $choice = Read-Host "Enter your choice (1-7)"
+        
+        switch ($choice) {
+            "1" { 
+                View-Configuration 
+                Pause
+            }
+            "2" { 
+                Edit-Configuration 
+            }
+            "3" { 
+                Reset-Configuration 
+                Pause
+            }
+            "4" { 
+                Backup-Configuration 
+                Pause
+            }
+            "5" { 
+                Restore-Configuration 
+                Pause
+            }
+            "6" { 
+                Test-Configuration 
+                Pause
+            }
+            "7" { return }
+            default {
+                Write-Host "Invalid choice. Please try again." -ForegroundColor Red
+                Start-Sleep -Seconds 1
+            }
+        }
+    }
+}
+
+function View-Configuration {
+    Write-Host "`nCurrent Configuration:" -ForegroundColor White
+    Write-Host "="*40 -ForegroundColor Gray
+    
+    # Display main configuration
+    $configGroups = @(
+        @{ Name = "General Settings"; Items = $Config.General },
+        @{ Name = "Scanning Settings"; Items = $Config.Scanning },
+        @{ Name = "Reporting Settings"; Items = $Config.Reporting },
+        @{ Name = "Notification Settings"; Items = $Config.Notifications },
+        @{ Name = "Check Settings"; Items = $Config.Checks }
     )
     
+    foreach ($group in $configGroups) {
+        Write-Host "`n$($group.Name):" -ForegroundColor Cyan
+        if ($group.Items) {
+            foreach ($item in $group.Items.GetEnumerator()) {
+                Write-Host "  $($item.Key): $($item.Value)" -ForegroundColor Gray
+            }
+        }
+    }
+    
+    Write-Host "`n" + "="*40 -ForegroundColor Gray
+}
+
+function Show-SystemInfo {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "SYSTEM INFORMATION" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    # Get system information
+    $os = Get-CimInstance Win32_OperatingSystem
+    $computer = Get-CimInstance Win32_ComputerSystem
+    $bios = Get-CimInstance Win32_BIOS
+    $cpu = Get-CimInstance Win32_Processor
+    $memory = Get-CimInstance Win32_PhysicalMemory | Measure-Object Capacity -Sum
+    
+    Write-Host "Operating System:" -ForegroundColor White
+    Write-Host "  Name: $($os.Caption)" -ForegroundColor Gray
+    Write-Host "  Version: $($os.Version)" -ForegroundColor Gray
+    Write-Host "  Architecture: $($os.OSArchitecture)" -ForegroundColor Gray
+    Write-Host "  Build: $($os.BuildNumber)" -ForegroundColor Gray
+    
+    Write-Host "`nComputer Information:" -ForegroundColor White
+    Write-Host "  Name: $($computer.Name)" -ForegroundColor Gray
+    Write-Host "  Manufacturer: $($computer.Manufacturer)" -ForegroundColor Gray
+    Write-Host "  Model: $($computer.Model)" -ForegroundColor Gray
+    Write-Host "  Domain: $($computer.Domain)" -ForegroundColor Gray
+    
+    Write-Host "`nBIOS Information:" -ForegroundColor White
+    Write-Host "  Manufacturer: $($bios.Manufacturer)" -ForegroundColor Gray
+    Write-Host "  Version: $($bios.SMBIOSBIOSVersion)" -ForegroundColor Gray
+    Write-Host "  Serial: $($bios.SerialNumber)" -ForegroundColor Gray
+    
+    Write-Host "`nProcessor Information:" -ForegroundColor White
+    Write-Host "  Name: $($cpu.Name)" -ForegroundColor Gray
+    Write-Host "  Cores: $($cpu.NumberOfCores)" -ForegroundColor Gray
+    Write-Host "  Threads: $($cpu.NumberOfLogicalProcessors)" -ForegroundColor Gray
+    Write-Host "  Max Speed: $($cpu.MaxClockSpeed) MHz" -ForegroundColor Gray
+    
+    Write-Host "`nMemory Information:" -ForegroundColor White
+    Write-Host "  Total RAM: $([math]::Round($memory.Sum / 1GB, 2)) GB" -ForegroundColor Gray
+    Write-Host "  Free RAM: $([math]::Round($os.FreePhysicalMemory / 1MB, 2)) GB" -ForegroundColor Gray
+    
+    Write-Host "`nSecurity Tool Information:" -ForegroundColor White
+    Write-Host "  Tool Name: $ScriptName" -ForegroundColor Gray
+    Write-Host "  Version: $ScriptVersion" -ForegroundColor Gray
+    Write-Host "  Author: $Author" -ForegroundColor Gray
+    Write-Host "  Last Updated: $LastUpdated" -ForegroundColor Gray
+    Write-Host "  Report Path: $($Config.ReportPath)" -ForegroundColor Gray
+    Write-Host "  Log Path: $($Config.LogPath)" -ForegroundColor Gray
+    
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+}
+
+function Show-Help {
+    Clear-Host
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+    Write-Host "HELP & DOCUMENTATION" -ForegroundColor Yellow
+    Write-Host "="*60 -ForegroundColor Cyan
+    Write-Host ""
+    
+    Write-Host "Overview:" -ForegroundColor White
+    Write-Host "  This tool provides comprehensive security assessment capabilities" -ForegroundColor Gray
+    Write-Host "  for networks, systems, applications, and compliance requirements." -ForegroundColor Gray
+    
+    Write-Host "`nFeatures:" -ForegroundColor White
+    Write-Host "  1. Network Security Scanning" -ForegroundColor Cyan
+    Write-Host "  2. System Security Assessment" -ForegroundColor Cyan
+    Write-Host "  3. Compliance Verification" -ForegroundColor Cyan
+    Write-Host "  4. Detailed Reporting" -ForegroundColor Cyan
+    Write-Host "  5. Risk Scoring" -ForegroundColor Cyan
+    
+    Write-Host "`nUsage:" -ForegroundColor White
+    Write-Host "  Main Menu Options:" -ForegroundColor Gray
+    Write-Host "    1. Run Comprehensive Assessment - Full security check" -ForegroundColor DarkGray
+    Write-Host "    2. Specific Checks - Run individual security checks" -ForegroundColor DarkGray
+    Write-Host "    3. View Reports - Access previous assessment reports" -ForegroundColor DarkGray
+    Write-Host "    4. Configuration - Customize tool settings" -ForegroundColor DarkGray
+    Write-Host "    5. System Info - View system details" -ForegroundColor DarkGray
+    Write-Host "    6. Help - This documentation" -ForegroundColor DarkGray
+    Write-Host "    7. Exit - Close the application" -ForegroundColor DarkGray
+    
+    Write-Host "`nPrerequisites:" -ForegroundColor White
+    Write-Host "  • Windows 10/11 or Windows Server 2016+" -ForegroundColor Gray
+    Write-Host "  • PowerShell 5.1 or later" -ForegroundColor Gray
+    Write-Host "  • Administrative privileges" -ForegroundColor Gray
+    Write-Host "  • Network connectivity (for remote scans)" -ForegroundColor Gray
+    
+    Write-Host "`nOutput:" -ForegroundColor White
+    Write-Host "  • HTML reports in: $($Config.ReportPath)" -ForegroundColor Gray
+    Write-Host "  • Log files in: $($Config.LogPath)" -ForegroundColor Gray
+    Write-Host "  • Configuration in: $($Config.ConfigPath)" -ForegroundColor Gray
+    
+    Write-Host "`nBest Practices:" -ForegroundColor White
+    Write-Host "  1. Run comprehensive assessments weekly" -ForegroundColor Gray
+    Write-Host "  2. Review reports promptly" -ForegroundColor Gray
+    Write-Host "  3. Address critical findings immediately" -ForegroundColor Gray
+    Write-Host "  4. Keep the tool updated" -ForegroundColor Gray
+    Write-Host "  5. Backup configuration regularly" -ForegroundColor Gray
+    
+    Write-Host "`nSupport:" -ForegroundColor White
+    Write-Host "  • Check logs for error details" -ForegroundColor Gray
+    Write-Host "  • Review generated reports" -ForegroundColor Gray
+    Write-Host "  • Contact: security-team@example.com" -ForegroundColor Gray
+    
+    Write-Host "`n" + "="*60 -ForegroundColor Cyan
+}
+
+# ============================================
+# MAIN EXECUTION
+# ============================================
+
+function Main {
+    <#
+    .SYNOPSIS
+    Main execution function
+    #>
+    
+    # Clear screen and show banner
+    Clear-Host
+    Write-Host "`n" + "*"*70 -ForegroundColor Cyan
+    Write-Host "*" -NoNewline -ForegroundColor Cyan
+    Write-Host "        ADVANCED SECURITY ASSESSMENT TOOL v$ScriptVersion        " -NoNewline -ForegroundColor Yellow
+    Write-Host "*" -ForegroundColor Cyan
+    Write-Host "*" -NoNewline -ForegroundColor Cyan
+    Write-Host "                     Enhanced Security Checking                    " -NoNewline -ForegroundColor White
+    Write-Host "*" -ForegroundColor Cyan
+    Write-Host "*"*70 -ForegroundColor Cyan
+    Write-Host ""
+    
+    # Check for administrative privileges
+    $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    if (-not $isAdmin) {
+        Write-Host "WARNING: This tool requires administrative privileges!" -ForegroundColor Red
+        Write-Host "Please run PowerShell as Administrator and try again." -ForegroundColor Yellow
+        Write-Host ""
+        Pause
+        exit 1
+    }
+    
+    # Initialize configuration
+    Write-Host "Initializing..." -ForegroundColor White
+    Write-Host ""
+    
     try {
-        Write-Log -Message "Starting web server security check for $ServerName" -Level Info
+        Initialize-Configuration | Out-Null
         
-        $results = @{
-            WebServerSettings = @{}
-            SecurityIssues = @()
-            Recommendations = @()
-        }
+        Write-Host "✓ Configuration loaded" -ForegroundColor Green
+        Write-Host "✓ Directories verified" -ForegroundColor Green
+        Write-Host "✓ Modules initialized" -ForegroundColor Green
         
-        # Check IIS settings
-        if (Get-Service -Name W3SVC -ErrorAction SilentlyContinue) {
-            $results.WebServerSettings.IIS = @{
-                Version = (Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\InetStp' -ErrorAction SilentlyContinue).VersionString
-                SSLEnabled = (Get-WebBinding -Name "Default Web Site" -Protocol "https" -ErrorAction SilentlyContinue) -ne $null
-                AuthenticationMethods = (Get-WebConfiguration "/system.webServer/security/authentication" -ErrorAction SilentlyContinue).Collection
-                RequestFiltering = (Get-WebConfiguration "/system.webServer/security/requestFiltering" -ErrorAction SilentlyContinue).Collection
-            }
-            
-            # Check for security issues
-            if (-not $results.WebServerSettings.IIS.SSLEnabled) {
-                $results.SecurityIssues += "SSL/TLS not enabled on default website"
-                $results.Recommendations += "Enable SSL/TLS and configure secure cipher suites"
-            }
-            
-            if ($results.WebServerSettings.IIS.AuthenticationMethods | Where-Object { $_.Enabled -eq $true -and $_.Name -eq "Anonymous" }) {
-                $results.SecurityIssues += "Anonymous authentication enabled"
-                $results.Recommendations += "Disable anonymous authentication if not required"
-            }
-        }
+        Start-Sleep -Seconds 1
         
-        # Check Apache settings if installed
-        if (Test-Path "C:\Program Files\Apache Group\Apache\conf\httpd.conf") {
-            $apacheConfig = Get-Content "C:\Program Files\Apache Group\Apache\conf\httpd.conf"
-            $results.WebServerSettings.Apache = @{
-                Version = ($apacheConfig | Select-String "ServerVersion").ToString()
-                SSLEnabled = ($apacheConfig | Select-String "SSLEngine on").Count -gt 0
-                SecurityHeaders = @{
-                    XFrameOptions = ($apacheConfig | Select-String "Header set X-Frame-Options").Count -gt 0
-                    XSSProtection = ($apacheConfig | Select-String "Header set X-XSS-Protection").Count -gt 0
-                    ContentSecurityPolicy = ($apacheConfig | Select-String "Header set Content-Security-Policy").Count -gt 0
-                }
-            }
-            
-            # Check for security issues
-            if (-not $results.WebServerSettings.Apache.SSLEnabled) {
-                $results.SecurityIssues += "SSL/TLS not enabled in Apache configuration"
-                $results.Recommendations += "Enable SSL/TLS in Apache configuration"
-            }
-            
-            if (-not $results.WebServerSettings.Apache.SecurityHeaders.XFrameOptions) {
-                $results.SecurityIssues += "X-Frame-Options header not configured"
-                $results.Recommendations += "Add X-Frame-Options header to prevent clickjacking"
-            }
-        }
+        # Show main menu
+        Show-EnhancedMenu
         
-        Write-Log -Message "Completed web server security check for $ServerName" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test web server security: $_" -Level Error
-        return $null
+    } catch {
+        Write-Host "`nInitialization failed: $_" -ForegroundColor Red
+        Write-Host "`nPlease check:" -ForegroundColor Yellow
+        Write-Host "  1. PowerShell version (requires 5.1+)" -ForegroundColor Gray
+        Write-Host "  2. Administrative privileges" -ForegroundColor Gray
+        Write-Host "  3. File system permissions" -ForegroundColor Gray
+        Write-Host "  4. Disk space availability" -ForegroundColor Gray
+        Write-Host ""
+        Pause
+        exit 1
     }
 }
 
-# Function to test database connection security
-function Test-DatabaseConnectionSecurity {
-    param (
-        [string]$ServerName = $env:COMPUTERNAME
-    )
-    
+# ============================================
+# SCRIPT ENTRY POINT
+# ============================================
+
+# Set error handling
+$ErrorActionPreference = "Stop"
+
+# Check if script is being run directly
+if ($MyInvocation.InvocationName -ne '.') {
     try {
-        Write-Log -Message "Starting database connection security check for $ServerName" -Level Info
-        
-        $results = @{
-            ConnectionSettings = @{}
-            SecurityIssues = @()
-            Recommendations = @()
-        }
-        
-        # Check SQL Server connection settings
-        $sqlConnections = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\*\MSSQLServer\SuperSocketNetLib' -ErrorAction SilentlyContinue
-        if ($sqlConnections) {
-            $results.ConnectionSettings.SQLServer = @{
-                TCPEnabled = $sqlConnections.TcpEnabled
-                TCPPort = $sqlConnections.TcpPort
-                ForceEncryption = $sqlConnections.ForceEncryption
-                CertificateThumbprint = $sqlConnections.CertificateThumbprint
-            }
-            
-            # Check for security issues
-            if (-not $results.ConnectionSettings.SQLServer.ForceEncryption) {
-                $results.SecurityIssues += "SQL Server encryption not enforced"
-                $results.Recommendations += "Enable ForceEncryption in SQL Server configuration"
-            }
-        }
-        
-        # Check MySQL connection settings
-        $mysqlConfig = Get-Content "C:\ProgramData\MySQL\MySQL Server 8.0\my.ini" -ErrorAction SilentlyContinue
-        if ($mysqlConfig) {
-            $results.ConnectionSettings.MySQL = @{
-                SSLEnabled = ($mysqlConfig | Select-String "ssl-ca").Count -gt 0
-                SSLVerify = ($mysqlConfig | Select-String "ssl-verify-server-cert").Count -gt 0
-                MaxConnections = ($mysqlConfig | Select-String "max_connections").ToString()
-            }
-            
-            # Check for security issues
-            if (-not $results.ConnectionSettings.MySQL.SSLEnabled) {
-                $results.SecurityIssues += "MySQL SSL not enabled"
-                $results.Recommendations += "Enable SSL in MySQL configuration"
-            }
-        }
-        
-        Write-Log -Message "Completed database connection security check for $ServerName" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test database connection security: $_" -Level Error
-        return $null
+        Main
+    } catch {
+        Write-Host "`nFatal error occurred: $_" -ForegroundColor Red
+        Write-Host "Stack trace:" -ForegroundColor DarkRed
+        Write-Host $_.ScriptStackTrace -ForegroundColor Gray
+        Write-Host ""
+        Write-Host "Please check the log file for details:" -ForegroundColor Yellow
+        Write-Host $LoggingConfig.LogFile -ForegroundColor Gray
+        Write-Host ""
+        Pause
+        exit 1
     }
 }
-
-# Function to test application security headers
-function Test-SecurityHeaders {
-    param (
-        [string]$Url = "http://localhost"
-    )
-    
-    try {
-        Write-Log -Message "Starting security headers check for $Url" -Level Info
-        
-        $results = @{
-            Headers = @{}
-            SecurityIssues = @()
-            Recommendations = @()
-        }
-        
-        $response = Invoke-WebRequest -Uri $Url -Method Head -ErrorAction SilentlyContinue
-        if ($response) {
-            $results.Headers = @{
-                XFrameOptions = $response.Headers["X-Frame-Options"]
-                XSSProtection = $response.Headers["X-XSS-Protection"]
-                ContentSecurityPolicy = $response.Headers["Content-Security-Policy"]
-                StrictTransportSecurity = $response.Headers["Strict-Transport-Security"]
-                XContentTypeOptions = $response.Headers["X-Content-Type-Options"]
-                ReferrerPolicy = $response.Headers["Referrer-Policy"]
-            }
-            
-            # Check for missing security headers
-            if (-not $results.Headers.XFrameOptions) {
-                $results.SecurityIssues += "X-Frame-Options header missing"
-                $results.Recommendations += "Add X-Frame-Options header to prevent clickjacking"
-            }
-            
-            if (-not $results.Headers.XSSProtection) {
-                $results.SecurityIssues += "X-XSS-Protection header missing"
-                $results.Recommendations += "Add X-XSS-Protection header to enable browser XSS filtering"
-            }
-            
-            if (-not $results.Headers.ContentSecurityPolicy) {
-                $results.SecurityIssues += "Content-Security-Policy header missing"
-                $results.Recommendations += "Add Content-Security-Policy header to prevent XSS and other injection attacks"
-            }
-            
-            if (-not $results.Headers.StrictTransportSecurity) {
-                $results.SecurityIssues += "Strict-Transport-Security header missing"
-                $results.Recommendations += "Add Strict-Transport-Security header to enforce HTTPS"
-            }
-        }
-        
-        Write-Log -Message "Completed security headers check for $Url" -Level Info
-        return $results
-    }
-    catch {
-        Write-Log -Message "Failed to test security headers: $_" -Level Error
-        return $null
-    }
-}
-
-# Main menu function
-function Show-Menu {
-    Write-Host "`nAdvanced Security Checks Menu" -ForegroundColor Cyan
-    Write-Host "1. Start All Security Checks"
-    Write-Host "2. Network Security Checks"
-    Write-Host "3. System Security Checks"
-    Write-Host "4. Application Security Checks"
-    Write-Host "5. Compliance Checks"
-    Write-Host "6. Registry Security Checks"
-    Write-Host "7. Service Security Checks"
-    Write-Host "8. Antivirus Status Check"
-    Write-Host "9. System Updates Check"
-    Write-Host "10. Browser Security Check"
-    Write-Host "11. Application Whitelisting Check"
-    Write-Host "12. Email Security Check"
-    Write-Host "13. Network Share Permissions Check"
-    Write-Host "14. Database Security Check"
-    Write-Host "15. Cloud Service Security Check"
-    Write-Host "16. Web Server Security Check"
-    Write-Host "17. Database Connection Security Check"
-    Write-Host "18. Security Headers Check"
-    Write-Host "19. SharePoint Security Check"
-    Write-Host "20. Exchange Security Check"
-    Write-Host "21. Custom Application Security Check"
-    Write-Host "22. View Previous Reports"
-    Write-Host "23. Exit"
-    
-    $choice = Read-Host "`nEnter your choice (1-23)"
-    
-    switch ($choice) {
-        "1" {
-            $networkChecks = Test-NetworkPorts
-            $systemChecks = Test-FirewallConfiguration
-            $appChecks = Test-UserAccountSecurity
-            $complianceChecks = Test-PasswordPolicy
-            $registryChecks = Test-RegistrySecurity
-            $serviceChecks = Test-ServiceSecurity
-            $antivirusChecks = Test-AntivirusStatus
-            $updateChecks = Test-SystemUpdates
-            $browserChecks = Test-BrowserSecurity
-            $whitelistChecks = Test-ApplicationWhitelisting
-            $emailChecks = Test-EmailSecurity
-            $shareChecks = Test-NetworkSharePermissions
-            $dbChecks = Test-DatabaseSecurity
-            $cloudChecks = Test-CloudServiceSecurity
-            $webServerChecks = Test-WebServerSecurity
-            $dbConnectionChecks = Test-DatabaseConnectionSecurity
-            $securityHeaderChecks = Test-SecurityHeaders
-            $sharePointChecks = Test-SharePointSecurity
-            $exchangeChecks = Test-ExchangeSecurity
-            $customAppChecks = Test-CustomApplicationSecurity
-            
-            New-EnhancedSecurityReport -Target $env:COMPUTERNAME `
-                                     -NetworkChecks $networkChecks `
-                                     -SystemChecks $systemChecks `
-                                     -ApplicationChecks $appChecks `
-                                     -ComplianceChecks $complianceChecks `
-                                     -RegistryChecks $registryChecks `
-                                     -ServiceChecks $serviceChecks `
-                                     -AntivirusChecks $antivirusChecks `
-                                     -UpdateChecks $updateChecks `
-                                     -BrowserChecks $browserChecks `
-                                     -WhitelistChecks $whitelistChecks `
-                                     -EmailChecks $emailChecks `
-                                     -ShareChecks $shareChecks `
-                                     -DatabaseChecks $dbChecks `
-                                     -CloudChecks $cloudChecks `
-                                     -WebServerChecks $webServerChecks `
-                                     -DbConnectionChecks $dbConnectionChecks `
-                                     -SecurityHeaderChecks $securityHeaderChecks `
-                                     -SharePointChecks $sharePointChecks `
-                                     -ExchangeChecks $exchangeChecks `
-                                     -CustomAppChecks $customAppChecks
-        }
-        "2" { Test-NetworkPorts }
-        "3" { Test-FirewallConfiguration }
-        "4" { Test-UserAccountSecurity }
-        "5" { Test-PasswordPolicy }
-        "6" { Test-RegistrySecurity }
-        "7" { Test-ServiceSecurity }
-        "8" { Test-AntivirusStatus }
-        "9" { Test-SystemUpdates }
-        "10" { Test-BrowserSecurity }
-        "11" { Test-ApplicationWhitelisting }
-        "12" { Test-EmailSecurity }
-        "13" { Test-NetworkSharePermissions }
-        "14" { Test-DatabaseSecurity }
-        "15" { Test-CloudServiceSecurity }
-        "16" { Test-WebServerSecurity }
-        "17" { Test-DatabaseConnectionSecurity }
-        "18" { Test-SecurityHeaders }
-        "19" { Test-SharePointSecurity }
-        "20" { Test-ExchangeSecurity }
-        "21" { Test-CustomApplicationSecurity }
-        "22" {
-            $reports = Get-ChildItem -Path $reportPath -Filter "enhanced_security_report_*.html" | Sort-Object LastWriteTime -Descending
-            if ($reports) {
-                Write-Host "`nRecent Reports:" -ForegroundColor Cyan
-                $reports | ForEach-Object { Write-Host $_.Name }
-                $reportChoice = Read-Host "`nEnter report name to view (or press Enter to return)"
-                if ($reportChoice) {
-                    Start-Process "$reportPath\$reportChoice"
-                }
-            }
-            else {
-                Write-Host "No reports found." -ForegroundColor Yellow
-            }
-        }
-        "23" { exit }
-        default { Write-Host "Invalid choice. Please try again." -ForegroundColor Red }
-    }
-    
-    Show-Menu
-}
-
-# Start the menu
-Show-Menu 
